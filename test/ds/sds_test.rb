@@ -64,9 +64,15 @@ class TestSds < OpenSCAP::TestCase
     OpenSCAP::Source.new DS_FILE do |source|
       assert_equal 'SCAP Source Datastream', source.type
       OpenSCAP::DS::Sds.new source: do |sds|
-        _xccdf_bench_source = sds.select_checklist!
+        benchmark_source = sds.select_checklist!
         html = sds.html_guide
         assert_include html, 'bootstrap'
+
+        OpenSCAP::Xccdf::Benchmark.new benchmark_source do |benchmark|
+          assert_empty benchmark.profiles
+          assert benchmark.items.length == 1
+          assert benchmark.items.keys.first == 'xccdf_moc.elpmaxe.www_rule_first'
+        end
       end
     end
   end

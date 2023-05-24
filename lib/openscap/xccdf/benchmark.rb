@@ -18,6 +18,12 @@ module OpenSCAP
                 "Cannot initialize OpenSCAP::Xccdf::Benchmark with '#{p}'"
         end
         OpenSCAP.raise! if @raw.null?
+
+        begin
+          yield self
+        ensure
+          destroy
+        end if block_given?
       end
 
       def profiles
