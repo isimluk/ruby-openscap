@@ -6,8 +6,9 @@ gemspec
 
 group :development do
   gem 'rake'
-  gem 'rubocop'
-  gem 'rubocop-performance'
-  gem 'rubocop-thread_safety'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-thread_safety', require: false
+  gem 'solargraph', require: false
   gem 'test-unit'
 end
