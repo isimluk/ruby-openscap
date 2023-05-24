@@ -15,6 +15,12 @@ module OpenSCAP
                  OpenSCAP.ds_sds_session_new_from_source param[:source].raw
                end
         OpenSCAP.raise! if @raw.null?
+
+        begin
+          yield self
+        ensure
+          destroy
+        end if block_given?
       end
 
       def select_checklist(p = {})

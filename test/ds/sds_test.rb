@@ -6,6 +6,8 @@ require 'openscap/ds/sds'
 require 'common/testcase'
 
 class TestSds < OpenSCAP::TestCase
+  DS_FILE = '../data/sds-complex.xml'
+
   def test_new
     new_sds.destroy
   end
@@ -58,11 +60,21 @@ class TestSds < OpenSCAP::TestCase
     sds.destroy
   end
 
+  def tests_use_through_yields
+    OpenSCAP::Source.new DS_FILE do |source|
+      assert_equal 'SCAP Source Datastream', source.type
+      OpenSCAP::DS::Sds.new source: do |sds|
+        _xccdf_bench_source = sds.select_checklist!
+        html = sds.html_guide
+        assert_include html, 'bootstrap'
+      end
+    end
+  end
+
   private
 
   def new_sds
-    filename = '../data/sds-complex.xml'
-    @s = OpenSCAP::Source.new filename
+    @s = OpenSCAP::Source.new DS_FILE
     assert !@s.nil?
     sds = OpenSCAP::DS::Sds.new source: @s
     assert !sds.nil?
