@@ -20,6 +20,12 @@ module OpenSCAP
         raise OpenSCAP::OpenSCAPError, "Cannot initialize #{self.class.name} with '#{param}'"
       end
       OpenSCAP.raise! if @raw.null?
+
+      begin
+        yield self
+      ensure
+        destroy
+      end if block_given?
     end
 
     def type

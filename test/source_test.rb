@@ -29,17 +29,17 @@ class TestSource < OpenSCAP::TestCase
   end
 
   def test_type_xccdf
-    s = OpenSCAP::Source.new('../data/xccdf.xml')
-    assert s.type == 'XCCDF Checklist', "Type was #{s.type}"
-    s.validate!
-    s.destroy
+    OpenSCAP::Source.new('../data/xccdf.xml') do |s|
+      assert s.type == 'XCCDF Checklist', "Type was #{s.type}"
+      s.validate!
+    end
   end
 
   def test_type_sds
-    s = OpenSCAP::Source.new('../data/sds-complex.xml')
-    assert s.type == 'SCAP Source Datastream', "Type was #{s.type}"
-    s.validate!
-    s.destroy
+    OpenSCAP::Source.new('../data/sds-complex.xml') do |s|
+      assert s.type == 'SCAP Source Datastream', "Type was #{s.type}"
+      s.validate!
+    end
   end
 
   def test_type_test_result

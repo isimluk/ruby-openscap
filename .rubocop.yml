@@ -27,9 +27,12 @@ Lint/FloatComparison:
     - 'test/**/*'
 
 Metrics/MethodLength:
-  Max: 13
+  Max: 32
   Exclude:
    - 'test/**/*'
+
+Style/MultilineIfModifier:
+  Enabled: false
 
 Naming/MethodParameterName:
   Enabled: false
