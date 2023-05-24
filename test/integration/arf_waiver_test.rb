@@ -1,13 +1,4 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 require 'openscap'
 require 'openscap/xccdf/benchmark'
@@ -27,13 +18,13 @@ class TestArfWaiver < OpenSCAP::TestCase
                  :time => 'yesterday',
                  :authority => 'John Hacker',
                  :raw_text => 'This should have passed')
-    rr.result == 'pass'
+    assert rr.result == 'pass'
 
     assert_default_score tr.score, -1, 1
     assert_default_score tr.score!(benchmark), 99, 101
 
     # create updated DOM (that includes the override element and new score)
-    arf.test_result=tr
+    arf.test_result = tr
     arf.source.save('modified.rds.xml')
     tr.destroy
     arf.destroy
@@ -48,6 +39,7 @@ class TestArfWaiver < OpenSCAP::TestCase
   end
 
   private
+
   def benchmark
     @benchmark ||= benchmark_init
   end
@@ -90,10 +82,10 @@ class TestArfWaiver < OpenSCAP::TestCase
   end
 
   def arf_init
-    @s = OpenSCAP::Xccdf::Session.new("../data/sds-complex.xml")
+    @s = OpenSCAP::Xccdf::Session.new('../data/sds-complex.xml')
     @s.load
     @s.evaluate
-    @s.export_results(:rds_file => "report.rds.xml")
-    OpenSCAP::DS::Arf.new("report.rds.xml")
+    @s.export_results(:rds_file => 'report.rds.xml')
+    OpenSCAP::DS::Arf.new('report.rds.xml')
   end
 end

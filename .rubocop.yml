@@ -1,0 +1,27 @@
+inherit_from:
+  - .rubocop_todo.yml
+
+Metrics/AbcSize:
+  Max: 16
+  Exclude:
+   - 'test/**/*'
+
+Metrics/LineLength:
+  Max: 110
+  Exclude:
+   - 'test/**/*'
+
+Metrics/MethodLength:
+  Max: 13
+  Exclude:
+   - 'test/**/*'
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Naming/UncommunicativeMethodParamName:
+  Exclude:
+    - '**/*'

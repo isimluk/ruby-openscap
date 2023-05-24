@@ -1,13 +1,4 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 module OpenSCAP
   class Text
@@ -27,7 +18,7 @@ module OpenSCAP
 
     def destroy
       OpenSCAP.oscap_text_free(raw)
-      raw = nil
+      @raw = nil
     end
   end
 
@@ -36,7 +27,7 @@ module OpenSCAP
       @raw = oscap_text_iterator
     end
 
-    def plaintext(lang=nil)
+    def plaintext(lang = nil)
       OpenSCAP.oscap_textlist_get_preferred_plaintext @raw, lang
     end
 

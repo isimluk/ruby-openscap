@@ -1,16 +1,8 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 require 'openscap/source'
 require 'openscap/xccdf/profile'
+require 'openscap/xccdf/item'
 
 module OpenSCAP
   module Xccdf
@@ -23,7 +15,7 @@ module OpenSCAP
           @raw = OpenSCAP.xccdf_benchmark_import_source p.raw
         else
           raise OpenSCAP::OpenSCAPError,
-            "Cannot initialize OpenSCAP::Xccdf::Benchmark with '#{p}'"
+                "Cannot initialize OpenSCAP::Xccdf::Benchmark with '#{p}'"
         end
         OpenSCAP.raise! if @raw.null?
       end
@@ -32,12 +24,17 @@ module OpenSCAP
         @profiles ||= profiles_init
       end
 
+      def items
+        @items ||= items_init
+      end
+
       def destroy
         OpenSCAP.xccdf_benchmark_free @raw
         @raw = nil
       end
 
       private
+
       def profiles_init
         profiles = {}
         profit = OpenSCAP.xccdf_benchmark_get_profiles raw
@@ -48,6 +45,20 @@ module OpenSCAP
         end
         OpenSCAP.xccdf_profile_iterator_free profit
         profiles
+      end
+
+      def items_init
+        items = {}
+        items_it = OpenSCAP.xccdf_item_get_content raw
+        while OpenSCAP.xccdf_item_iterator_has_more items_it
+          item_p = OpenSCAP.xccdf_item_iterator_next items_it
+          item = OpenSCAP::Xccdf::Item.build item_p
+          items.merge! item.sub_items
+          items[item.id] = item
+          # TODO: iterate through childs
+        end
+        OpenSCAP.xccdf_item_iterator_free items_it
+        items
       end
     end
   end

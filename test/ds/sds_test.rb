@@ -1,13 +1,4 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 require 'openscap'
 require 'openscap/source'
@@ -25,7 +16,7 @@ class TestSds < OpenSCAP::TestCase
     assert !@s.nil?
     msg = nil
     begin
-      sds = OpenSCAP::DS::Sds.new :source => @s
+      OpenSCAP::DS::Sds.new :source => @s
       assert false
     rescue OpenSCAP::OpenSCAPError => e
       msg = e.to_s
@@ -44,11 +35,11 @@ class TestSds < OpenSCAP::TestCase
     sds = new_sds
     benchmark_source = sds.select_checklist!
     benchmark = OpenSCAP::Xccdf::Benchmark.new benchmark_source
-    benchmark.profiles.keys.each { |id|
+    benchmark.profiles.each_key do |id|
       guide = sds.html_guide id
       assert !guide.nil?
       assert guide.include?(id)
-    }
+    end
     benchmark.destroy
     sds.destroy
   end
@@ -57,7 +48,7 @@ class TestSds < OpenSCAP::TestCase
     sds = new_sds
     msg = nil
     begin
-      benchmark = sds.select_checklist! :datastream_id => "wrong"
+      benchmark = sds.select_checklist! :datastream_id => 'wrong'
       assert false
     rescue OpenSCAP::OpenSCAPError => e
       msg = e.to_s
@@ -68,12 +59,13 @@ class TestSds < OpenSCAP::TestCase
   end
 
   private
+
   def new_sds
     filename = '../data/sds-complex.xml'
     @s = OpenSCAP::Source.new filename
     assert !@s.nil?
     sds = OpenSCAP::DS::Sds.new :source => @s
     assert !sds.nil?
-    return sds
+    sds
   end
 end

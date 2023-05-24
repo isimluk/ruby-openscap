@@ -1,20 +1,11 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 require 'test/unit'
 
 module OpenSCAP
   class TestCase < Test::Unit::TestCase
     def setup
-      workdir = "test/output"
+      workdir = 'test/output'
       if Dir.pwd.end_with? 'test/output'
         cleanup # Older TestCase do not run cleanup method.
       end
@@ -26,16 +17,14 @@ module OpenSCAP
     end
 
     def cleanup
-      @s.destroy if @s
-      Dir.chdir "../.."
+      @s&.destroy
+      Dir.chdir '../..'
       OpenSCAP.raise! if OpenSCAP.error?
       OpenSCAP.oscap_cleanup
     end
 
-    def test_x
-    end
-
     protected
+
     def assert_default_score(scores, low, high)
       assert scores.size == 1
       s = scores['urn:xccdf:scoring:default']

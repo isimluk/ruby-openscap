@@ -1,31 +1,22 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 require 'ffi'
 
 module OpenSCAP
   extend FFI::Library
-  ffi_lib ['libopenscap.so.8', 'openscap']
+  ffi_lib ['libopenscap.so.8', 'libopenscap.so.25', 'openscap']
 
   def self.error?
-    return oscap_err()
+    oscap_err
   end
 
-  def self.get_full_error
+  def self.full_error
     err = oscap_err_get_full_error
-    return err.null? ? nil : err.read_string()
+    err.null? ? nil : err.read_string
   end
 
-  def self.raise!(msg=nil)
-    err = get_full_error
+  def self.raise!(msg = nil)
+    err = full_error
     if err.nil?
       err = msg.nil? ? '(unknown error)' : msg
     else

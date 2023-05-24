@@ -1,13 +1,4 @@
-#
-# Copyright (c) 2014 Red Hat Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
+# frozen_string_literal: true
 
 require 'openscap/source'
 require 'openscap/exceptions'
@@ -29,17 +20,17 @@ module OpenSCAP
           @raw = OpenSCAP.xccdf_result_import_source(t)
           OpenSCAP.raise! if @raw.null?
         else
-          raise OpenSCAP::OpenSCAPError, "Cannot initialize TestResult with #{t}"
+          raise OpenSCAP::OpenSCAPError, "Cannot initialize #{self.class.name} with #{t}"
         end
         init_ruleresults
       end
 
       def id
-        return OpenSCAP.xccdf_result_get_id(@raw)
+        OpenSCAP.xccdf_result_get_id(@raw)
       end
 
       def profile
-        return OpenSCAP.xccdf_result_get_profile(@raw)
+        OpenSCAP.xccdf_result_get_profile(@raw)
       end
 
       def score
@@ -47,9 +38,9 @@ module OpenSCAP
       end
 
       def score!(benchmark)
-        #recalculate the scores in the scope of given benchmark
+        # recalculate the scores in the scope of given benchmark
         @score = nil
-        OpenSCAP.raise! unless OpenSCAP.xccdf_result_recalculate_scores(@raw, benchmark.raw) == 0
+        OpenSCAP.raise! unless OpenSCAP.xccdf_result_recalculate_scores(@raw, benchmark.raw).zero?
         score
       end
 
@@ -64,10 +55,11 @@ module OpenSCAP
       end
 
       private
+
       def init_ruleresults
-        @rr = Hash.new
+        @rr = {}
         rr_it = OpenSCAP.xccdf_result_get_rule_results(@raw)
-        while OpenSCAP.xccdf_rule_result_iterator_has_more(rr_it) do
+        while OpenSCAP.xccdf_rule_result_iterator_has_more(rr_it)
           rr_raw = OpenSCAP.xccdf_rule_result_iterator_next(rr_it)
           rr = OpenSCAP::Xccdf::RuleResult.new rr_raw
           @rr[rr.id] = rr
@@ -76,15 +68,15 @@ module OpenSCAP
       end
 
       def score_init
-        scores = Hash.new
+        scores = {}
         scorit = OpenSCAP.xccdf_result_get_scores(@raw)
-        while OpenSCAP.xccdf_score_iterator_has_more(scorit) do
+        while OpenSCAP.xccdf_score_iterator_has_more(scorit)
           s = OpenSCAP.xccdf_score_iterator_next(scorit)
           scores[OpenSCAP.xccdf_score_get_system(s)] = {
             :system => OpenSCAP.xccdf_score_get_system(s),
             :value => OpenSCAP.xccdf_score_get_score(s),
             :max => OpenSCAP.xccdf_score_get_maximum(s)
-            }
+          }
         end
         OpenSCAP.xccdf_score_iterator_free(scorit)
         scores
@@ -99,7 +91,7 @@ module OpenSCAP
   attach_function :xccdf_result_recalculate_scores, [:pointer, :pointer], :int
   attach_function :xccdf_result_export_source, [:pointer, :string], :pointer
 
-  attach_function :xccdf_result_get_rule_results, [:pointer] ,:pointer
+  attach_function :xccdf_result_get_rule_results, [:pointer], :pointer
   attach_function :xccdf_rule_result_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_rule_result_iterator_free, [:pointer], :void
   attach_function :xccdf_rule_result_iterator_next, [:pointer], :pointer
