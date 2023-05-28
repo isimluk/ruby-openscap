@@ -11,4 +11,6 @@ group :development do
   gem 'rubocop-thread_safety', require: false
   gem 'solargraph', require: false
   gem 'test-unit'
+
+  gem 'pry'
 end
