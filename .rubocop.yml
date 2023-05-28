@@ -31,6 +31,10 @@ Metrics/MethodLength:
   Exclude:
    - 'test/**/*'
 
+Metrics/ClassLength:
+  Exclude:
+   - 'test/**/*'
+
 Style/MultilineIfModifier:
   Enabled: false
 

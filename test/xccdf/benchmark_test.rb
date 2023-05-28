@@ -103,6 +103,12 @@ class TestBenchmark < OpenSCAP::TestCase
     b.destroy
   end
 
+  def test_benchamrk_id
+    benchmark do |b|
+      assert_equal b.id, 'xccdf_org.ssgproject.content_benchmark_FEDORA'
+    end
+  end
+
   private
 
   def benchmark_from_file
@@ -111,5 +117,11 @@ class TestBenchmark < OpenSCAP::TestCase
     source.destroy
     assert !b.nil?
     b
+  end
+
+  def benchmark(&)
+    OpenSCAP::Source.new '../data/xccdf.xml' do |source|
+      OpenSCAP::Xccdf::Benchmark.new(source, &)
+    end
   end
 end

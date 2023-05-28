@@ -26,6 +26,10 @@ module OpenSCAP
         end if block_given?
       end
 
+      def id
+        OpenSCAP.xccdf_benchmark_get_id raw
+      end
+
       def profiles
         @profiles ||= profiles_init
       end
@@ -72,6 +76,7 @@ module OpenSCAP
   attach_function :xccdf_benchmark_import_source, [:pointer], :pointer
   attach_function :xccdf_benchmark_free, [:pointer], :void
 
+  attach_function :xccdf_benchmark_get_id, [:pointer], :string
   attach_function :xccdf_benchmark_get_profiles, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_profile_iterator_next, [:pointer], :pointer
