@@ -18,7 +18,7 @@ jobs:
     - run: |
         sudo apt-get update
         sudo apt-get -y install libopenscap8
-    - run: |
-        bundle install
-    - run: |
-        ./runtest.sh
+    - run: bundle install
+    - run: gem build openscap.gemspec
+    - run: bundle exec rake test
+    - run: bundle exec rubocop
