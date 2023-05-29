@@ -115,6 +115,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_title
+    benchmark do |b|
+      assert_equal b.title, 'Guide to the Secure Configuration of Fedora'
+    end
+  end
+
   private
 
   def benchmark_from_file

@@ -38,6 +38,9 @@ Metrics/ClassLength:
 Style/MultilineIfModifier:
   Enabled: false
 
+Style/MethodDefParentheses:
+  Enabled: false
+
 Naming/MethodParameterName:
   Enabled: false
 

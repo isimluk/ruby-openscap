@@ -31,6 +31,10 @@ module OpenSCAP
         OpenSCAP.xccdf_benchmark_get_id raw
       end
 
+      def title lang: nil
+        OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_benchmark_get_title(@raw), lang:
+      end
+
       def status_current
         Status.new OpenSCAP.xccdf_benchmark_get_status_current(raw)
       end
@@ -83,6 +87,7 @@ module OpenSCAP
 
   attach_function :xccdf_benchmark_get_id, [:pointer], :string
   attach_function :xccdf_benchmark_get_status_current, [:pointer], :pointer
+  attach_function :xccdf_benchmark_get_title, [:pointer], :pointer
   attach_function :xccdf_benchmark_get_profiles, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_profile_iterator_next, [:pointer], :pointer
