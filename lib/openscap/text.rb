@@ -25,6 +25,12 @@ module OpenSCAP
   class TextList
     def initialize(oscap_text_iterator)
       @raw = oscap_text_iterator
+
+      begin
+        yield self
+      ensure
+        destroy
+      end if block_given?
     end
 
     def plaintext(lang = nil)
@@ -33,6 +39,12 @@ module OpenSCAP
 
     def destroy
       OpenSCAP.oscap_text_iterator_free @raw
+    end
+
+    def self.find_plaintext(pointer, lang:)
+      new(pointer) do |list|
+        return list.plaintext lang
+      end
     end
   end
 
