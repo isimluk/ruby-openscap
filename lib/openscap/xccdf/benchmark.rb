@@ -51,6 +51,16 @@ module OpenSCAP
         @items ||= items_init
       end
 
+      # Iterate through items in order
+      def each_item(&)
+        items_it = OpenSCAP.xccdf_item_get_content @raw
+        while OpenSCAP.xccdf_item_iterator_has_more items_it
+          item_p = OpenSCAP.xccdf_item_iterator_next items_it
+          yield OpenSCAP::Xccdf::Item.build item_p
+        end
+        OpenSCAP.xccdf_item_iterator_free items_it
+      end
+
       def destroy
         OpenSCAP.xccdf_benchmark_free @raw
         @raw = nil
@@ -72,15 +82,10 @@ module OpenSCAP
 
       def items_init
         items = {}
-        items_it = OpenSCAP.xccdf_item_get_content raw
-        while OpenSCAP.xccdf_item_iterator_has_more items_it
-          item_p = OpenSCAP.xccdf_item_iterator_next items_it
-          item = OpenSCAP::Xccdf::Item.build item_p
+        each_item do |item|
           items.merge! item.sub_items
           items[item.id] = item
-          # TODO: iterate through childs
         end
-        OpenSCAP.xccdf_item_iterator_free items_it
         items
       end
     end
