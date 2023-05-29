@@ -4,8 +4,13 @@ module OpenSCAP
   class Text
     attr_reader :raw
 
-    def initialize
-      @raw = OpenSCAP.oscap_text_new
+    def initialize(t = nil)
+      @raw = case t
+             when FFI::Pointer
+               t
+             when nil
+               OpenSCAP.oscap_text_new
+             end
     end
 
     def text=(str)
@@ -37,6 +42,11 @@ module OpenSCAP
       OpenSCAP.oscap_textlist_get_preferred_plaintext @raw, lang
     end
 
+    def markup(lang:)
+      text_pointer = OpenSCAP.oscap_textlist_get_preferred_text @raw, lang
+      Text.new(text_pointer).text
+    end
+
     def destroy
       OpenSCAP.oscap_text_iterator_free @raw
     end
@@ -44,6 +54,12 @@ module OpenSCAP
     def self.find_plaintext(pointer, lang:)
       new(pointer) do |list|
         return list.plaintext lang
+      end
+    end
+
+    def self.find_markup(pointer, lang:)
+      new(pointer) do |list|
+        return list.markup lang:
       end
     end
   end
@@ -54,5 +70,6 @@ module OpenSCAP
   attach_function :oscap_text_free, [:pointer], :void
 
   attach_function :oscap_textlist_get_preferred_plaintext, %i[pointer string], :string
+  attach_function :oscap_textlist_get_preferred_text, %i[pointer string], :pointer
   attach_function :oscap_text_iterator_free, [:pointer], :void
 end

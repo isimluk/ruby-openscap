@@ -121,6 +121,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_description
+    benchmark do |b|
+      assert_equal b.description, DESCRIPTION
+    end
+  end
+
   private
 
   def benchmark_from_file
@@ -136,4 +142,25 @@ class TestBenchmark < OpenSCAP::TestCase
       OpenSCAP::Xccdf::Benchmark.new(source, &)
     end
   end
+
+  DESCRIPTION = "This guide presents a catalog of security-relevant configuration\n" \
+                "settings for Fedora operating system formatted in the eXtensible Configuration\n" \
+                "Checklist Description Format (XCCDF).\n" \
+                "<br xmlns=\"http://www.w3.org/1999/xhtml\"/>\n" \
+                "<br xmlns=\"http://www.w3.org/1999/xhtml\"/>\n" \
+                "Providing system administrators with such guidance informs them how to securely\n" \
+                "configure systems under their control in a variety of network roles.  Policy\n" \
+                "makers and baseline creators can use this catalog of settings, with its\n" \
+                "associated references to higher-level security control catalogs, in order to\n" \
+                "assist them in security baseline creation.  This guide is a <i xmlns=\"http://www.w3.org/1999/xhtml\">catalog, not a\n" \
+                "checklist,</i> and satisfaction of every item is not likely to be possible or\n" \
+                "sensible in many operational scenarios.  However, the XCCDF format enables\n" \
+                "granular selection and adjustment of settings, and their association with OVAL\n" \
+                "and OCIL content provides an automated checking capability.  Transformations of\n" \
+                "this document, and its associated automated checking content, are capable of\n" \
+                "providing baselines that meet a diverse set of policy objectives.  Some example\n" \
+                "XCCDF <i xmlns=\"http://www.w3.org/1999/xhtml\">Profiles</i>, which are selections of items that form checklists and\n" \
+                "can be used as baselines, are available with this guide.  They can be\n" \
+                "processed, in an automated fashion, with tools that support the Security\n" \
+                "Content Automation Protocol (SCAP).\n"
 end
