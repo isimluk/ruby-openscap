@@ -31,13 +31,10 @@ module OpenSCAP
 
       def profiles_init
         profiles = {}
-        profit = OpenSCAP.xccdf_tailoring_get_profiles raw
-        while OpenSCAP.xccdf_profile_iterator_has_more profit
-          profile_p = OpenSCAP.xccdf_profile_iterator_next profit
-          profile = OpenSCAP::Xccdf::Profile.new profile_p
+        OpenSCAP._iterate over: OpenSCAP.xccdf_tailoring_get_profiles(@raw), as: 'xccdf_profile' do |pointer|
+          profile = OpenSCAP::Xccdf::Profile.new pointer
           profiles[profile.id] = profile
         end
-        OpenSCAP.xccdf_profile_iterator_free profit
         profiles
       end
     end

@@ -23,21 +23,17 @@ module OpenSCAP
 
       def fixes
         fixes = []
-        items_it = OpenSCAP.xccdf_rule_get_fixes(@raw)
-        while OpenSCAP.xccdf_fix_iterator_has_more items_it
-          fixes << OpenSCAP::Xccdf::Fix.new(OpenSCAP.xccdf_fix_iterator_next(items_it))
+        OpenSCAP._iterate over: OpenSCAP.xccdf_rule_get_fixes(@raw), as: 'xccdf_fix' do |pointer|
+          fixes << OpenSCAP::Xccdf::Fix.new(pointer)
         end
-        OpenSCAP.xccdf_fix_iterator_free items_it
         fixes
       end
 
       def idents
         idents = []
-        idents_it = OpenSCAP.xccdf_rule_get_idents(@raw)
-        while OpenSCAP.xccdf_ident_iterator_has_more idents_it
-          idents << OpenSCAP::Xccdf::Ident.new(OpenSCAP.xccdf_ident_iterator_next(idents_it))
+        OpenSCAP._iterate over: OpenSCAP.xccdf_rule_get_idents(@raw), as: 'xccdf_ident' do |pointer|
+          idents << OpenSCAP::Xccdf::Ident.new(pointer)
         end
-        OpenSCAP.xccdf_ident_iterator_free idents_it
         idents
       end
     end

@@ -57,27 +57,22 @@ module OpenSCAP
 
       def init_ruleresults
         @rr = {}
-        rr_it = OpenSCAP.xccdf_result_get_rule_results(@raw)
-        while OpenSCAP.xccdf_rule_result_iterator_has_more(rr_it)
-          rr_raw = OpenSCAP.xccdf_rule_result_iterator_next(rr_it)
-          rr = OpenSCAP::Xccdf::RuleResult.new rr_raw
+        OpenSCAP._iterate over: OpenSCAP.xccdf_result_get_rule_results(@raw),
+                          as: 'xccdf_rule_result' do |pointer|
+          rr = OpenSCAP::Xccdf::RuleResult.new pointer
           @rr[rr.id] = rr
         end
-        OpenSCAP.xccdf_rule_result_iterator_free(rr_it)
       end
 
       def score_init
         scores = {}
-        scorit = OpenSCAP.xccdf_result_get_scores(@raw)
-        while OpenSCAP.xccdf_score_iterator_has_more(scorit)
-          s = OpenSCAP.xccdf_score_iterator_next(scorit)
+        OpenSCAP._iterate over: OpenSCAP.xccdf_result_get_scores(@raw), as: 'xccdf_score' do |s|
           scores[OpenSCAP.xccdf_score_get_system(s)] = {
             system: OpenSCAP.xccdf_score_get_system(s),
             value: OpenSCAP.xccdf_score_get_score(s),
             max: OpenSCAP.xccdf_score_get_maximum(s)
           }
         end
-        OpenSCAP.xccdf_score_iterator_free(scorit)
         scores
       end
     end

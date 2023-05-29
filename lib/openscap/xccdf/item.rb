@@ -50,12 +50,9 @@ module OpenSCAP
 
       def references
         refs = []
-        refs_it = OpenSCAP.xccdf_item_get_references(@raw)
-        while OpenSCAP.oscap_reference_iterator_has_more refs_it
-          ref = OpenSCAP::Xccdf::Reference.new(OpenSCAP.oscap_reference_iterator_next(refs_it))
-          refs << ref
+        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_references(@raw), as: 'oscap_reference' do |pointer|
+          refs << OpenSCAP::Xccdf::Reference.new(pointer)
         end
-        OpenSCAP.oscap_reference_iterator_free refs_it
         refs
       end
 
@@ -72,14 +69,11 @@ module OpenSCAP
 
       def sub_items_init
         collect = {}
-        items_it = OpenSCAP.xccdf_item_get_content @raw
-        while OpenSCAP.xccdf_item_iterator_has_more items_it
-          item_p = OpenSCAP.xccdf_item_iterator_next items_it
-          item = OpenSCAP::Xccdf::Item.build item_p
+        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_content(@raw), as: 'xccdf_item' do |pointer|
+          item = OpenSCAP::Xccdf::Item.build pointer
           collect.merge! item.sub_items
           collect[item.id] = item
         end
-        OpenSCAP.xccdf_item_iterator_free items_it
         collect
       end
     end
