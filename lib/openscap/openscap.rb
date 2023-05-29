@@ -25,6 +25,15 @@ module OpenSCAP
     raise OpenSCAPError, err
   end
 
+  def self._iterate(over:, as:, &)
+    has_more_method = "#{as}_iterator_has_more"
+    next_method = "#{as}_iterator_next"
+    free_method = "#{as}_iterator_free"
+
+    yield send(next_method, over) while send(has_more_method, over)
+    send(free_method, over)
+  end
+
   attach_function :oscap_init, [], :void
   attach_function :oscap_cleanup, [], :void
   attach_function :oscap_get_version, [], :string

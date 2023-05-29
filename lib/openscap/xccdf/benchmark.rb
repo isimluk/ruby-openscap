@@ -51,14 +51,10 @@ module OpenSCAP
         @items ||= items_init
       end
 
-      # Iterate through items in order
       def each_item(&)
-        items_it = OpenSCAP.xccdf_item_get_content @raw
-        while OpenSCAP.xccdf_item_iterator_has_more items_it
-          item_p = OpenSCAP.xccdf_item_iterator_next items_it
-          yield OpenSCAP::Xccdf::Item.build item_p
+        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_content(@raw), as: 'xccdf_item' do |pointer|
+          yield OpenSCAP::Xccdf::Item.build(pointer)
         end
-        OpenSCAP.xccdf_item_iterator_free items_it
       end
 
       def destroy
