@@ -3,6 +3,7 @@
 require 'openscap/source'
 require 'openscap/xccdf/profile'
 require 'openscap/xccdf/item'
+require 'openscap/xccdf/status'
 
 module OpenSCAP
   module Xccdf
@@ -28,6 +29,10 @@ module OpenSCAP
 
       def id
         OpenSCAP.xccdf_benchmark_get_id raw
+      end
+
+      def status_current
+        Status.new OpenSCAP.xccdf_benchmark_get_status_current(raw)
       end
 
       def profiles
@@ -77,6 +82,7 @@ module OpenSCAP
   attach_function :xccdf_benchmark_free, [:pointer], :void
 
   attach_function :xccdf_benchmark_get_id, [:pointer], :string
+  attach_function :xccdf_benchmark_get_status_current, [:pointer], :pointer
   attach_function :xccdf_benchmark_get_profiles, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_profile_iterator_next, [:pointer], :pointer

@@ -109,6 +109,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_status_current
+    benchmark do |b|
+      assert_equal b.status_current.status, :draft
+    end
+  end
+
   private
 
   def benchmark_from_file
