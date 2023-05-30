@@ -56,6 +56,12 @@ module OpenSCAP
         refs
       end
 
+      def each_child(&)
+        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_content(@raw), as: 'xccdf_item' do |pointer|
+          yield OpenSCAP::Xccdf::Item.build pointer
+        end
+      end
+
       def sub_items
         @sub_items ||= sub_items_init
       end
@@ -69,8 +75,7 @@ module OpenSCAP
 
       def sub_items_init
         collect = {}
-        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_content(@raw), as: 'xccdf_item' do |pointer|
-          item = OpenSCAP::Xccdf::Item.build pointer
+        each_child do |item|
           collect.merge! item.sub_items
           collect[item.id] = item
         end
