@@ -56,36 +56,16 @@ module OpenSCAP
         refs
       end
 
-      def each_child(&)
-        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_content(@raw), as: 'xccdf_item' do |pointer|
-          yield OpenSCAP::Xccdf::Item.build pointer
-        end
-      end
-
-      def sub_items
-        @sub_items ||= sub_items_init
-      end
+      def sub_items = {}
 
       def destroy
         OpenSCAP.xccdf_item_free @raw
         @raw = nil
       end
-
-      private
-
-      def sub_items_init
-        collect = {}
-        each_child do |item|
-          collect.merge! item.sub_items
-          collect[item.id] = item
-        end
-        collect
-      end
     end
   end
 
   attach_function :xccdf_item_get_id, [:pointer], :string
-  attach_function :xccdf_item_get_content, [:pointer], :pointer
   attach_function :xccdf_item_free, [:pointer], :void
   attach_function :xccdf_item_get_title, [:pointer], :pointer
   attach_function :xccdf_item_get_description, [:pointer], :pointer
@@ -98,10 +78,6 @@ module OpenSCAP
                        :group, 0x2000,
                        :value, 0x4000)
   attach_function :xccdf_item_get_type, [:pointer], XccdfItemType
-
-  attach_function :xccdf_item_iterator_has_more, [:pointer], :bool
-  attach_function :xccdf_item_iterator_next, [:pointer], :pointer
-  attach_function :xccdf_item_iterator_free, [:pointer], :void
 
   attach_function :xccdf_item_get_references, [:pointer], :pointer
   attach_function :oscap_reference_iterator_has_more, [:pointer], :bool
