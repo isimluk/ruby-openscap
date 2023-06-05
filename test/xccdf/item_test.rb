@@ -23,6 +23,18 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  def test_rationale_html
+    expected_markup = "\n" \
+                      "For AIDE to be effective, an initial database of <i xmlns=\"http://www.w3.org/1999/xhtml\">\"known-good\"</i> information about files\n" \
+                      "must be captured and it should be able to be verified against the installed files.\n"
+    benchmark do |b|
+      item = b.items['xccdf_org.ssgproject.content_rule_aide_build_database']
+      refute_nil item
+
+      assert_equal item.rationale(markup: true), expected_markup
+    end
+  end
+
   def benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
       OpenSCAP::Xccdf::Benchmark.new(source, &)

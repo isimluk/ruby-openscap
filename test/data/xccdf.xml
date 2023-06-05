@@ -461,7 +461,7 @@ If this check produces any unexpected output, investigate.
             <reference href="http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf">SC-28</reference>
             <reference href="http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf">SI-7</reference>
             <rationale xml:lang="en-US">
-For AIDE to be effective, an initial database of "known-good" information about files
+For AIDE to be effective, an initial database of <i xmlns="http://www.w3.org/1999/xhtml">"known-good"</i> information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
           </Rule>
