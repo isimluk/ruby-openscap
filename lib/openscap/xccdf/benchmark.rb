@@ -32,11 +32,11 @@ module OpenSCAP
       end
 
       def title lang: nil
-        OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_benchmark_get_title(@raw), lang:
+        TextList.extract OpenSCAP.xccdf_benchmark_get_title(@raw), lang:, markup: false
       end
 
       def description lang: nil
-        TextList.find_markup OpenSCAP.xccdf_benchmark_get_description(@raw), lang:
+        TextList.extract OpenSCAP.xccdf_benchmark_get_description(@raw), lang:, markup: true
       end
 
       def status_current

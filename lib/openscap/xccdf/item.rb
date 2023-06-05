@@ -37,23 +37,15 @@ module OpenSCAP
       end
 
       def title(prefered_lang = nil)
-        OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_item_get_title(@raw), lang: prefered_lang
+        TextList.extract OpenSCAP.xccdf_item_get_title(@raw), lang: prefered_lang, markup: false
       end
 
       def description(prefered_lang = nil, markup: false)
-        if markup
-          OpenSCAP::TextList.find_markup OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang
-        else
-          OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang
-        end
+        TextList.extract(OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang, markup:)
       end
 
       def rationale(prefered_lang = nil, markup: false)
-        if markup
-          OpenSCAP::TextList.find_markup OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang
-        else
-          OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang
-        end
+        TextList.extract(OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang, markup:)
       end
 
       def references
