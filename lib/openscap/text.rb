@@ -52,22 +52,12 @@ module OpenSCAP
     end
 
     def self.extract(pointer, lang:, markup:)
-      if markup
-        find_markup(pointer, lang:)
-      else
-        find_plaintext(pointer, lang:)
-      end
-    end
-
-    def self.find_plaintext(pointer, lang:)
       new(pointer) do |list|
-        return list.plaintext lang
-      end
-    end
-
-    def self.find_markup(pointer, lang:)
-      new(pointer) do |list|
-        return list.markup lang:
+        if markup
+          return list.markup(lang:)
+        else
+          return list.plaintext(lang)
+        end
       end
     end
   end
