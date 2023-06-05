@@ -44,6 +44,8 @@ module OpenSCAP
 
     def markup(lang:)
       text_pointer = OpenSCAP.oscap_textlist_get_preferred_text @raw, lang
+      return nil if text_pointer.null?
+
       Text.new(text_pointer).text
     end
 

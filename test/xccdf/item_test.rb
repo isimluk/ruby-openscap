@@ -35,6 +35,15 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  def test_missing_rationale
+    benchmark do |b|
+      item_sans_rationale = b.items['xccdf_org.ssgproject.content_group_intro']
+      refute_nil item_sans_rationale
+
+      assert_equal item_sans_rationale.rationale(markup: true), nil
+    end
+  end
+
   def benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
       OpenSCAP::Xccdf::Benchmark.new(source, &)
