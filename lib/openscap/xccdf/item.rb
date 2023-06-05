@@ -48,8 +48,12 @@ module OpenSCAP
         end
       end
 
-      def rationale(prefered_lang = nil)
-        OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang
+      def rationale(prefered_lang = nil, markup: false)
+        if markup
+          OpenSCAP::TextList.find_markup OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang
+        else
+          OpenSCAP::TextList.find_plaintext OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang
+        end
       end
 
       def references
