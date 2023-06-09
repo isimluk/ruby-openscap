@@ -57,6 +57,12 @@ module OpenSCAP
         end
       end
 
+      def each_profile(&)
+        OpenSCAP._iterate over: OpenSCAP.xccdf_benchmark_get_profiles(@raw), as: 'xccdf_profile' do |pointer|
+          yield OpenSCAP::Xccdf::Profile.new pointer
+        end
+      end
+
       def destroy
         OpenSCAP.xccdf_benchmark_free @raw
         @raw = nil
@@ -66,8 +72,7 @@ module OpenSCAP
 
       def profiles_init
         profiles = {}
-        OpenSCAP._iterate over: OpenSCAP.xccdf_benchmark_get_profiles(@raw), as: 'xccdf_profile' do |pointer|
-          profile = OpenSCAP::Xccdf::Profile.new pointer
+        each_profile do |profile|
           profiles[profile.id] = profile
         end
         profiles
