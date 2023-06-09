@@ -21,10 +21,7 @@ module OpenSCAP
       end
 
       def title(prefered_lang = nil)
-        textlist = OpenSCAP::TextList.new(OpenSCAP.xccdf_profile_get_title(@raw))
-        title = textlist.plaintext(prefered_lang)
-        textlist.destroy
-        title
+        TextList.extract(OpenSCAP.xccdf_profile_get_title(@raw), lang: prefered_lang, markup: false)
       end
 
       def description(prefered_lang: nil, markup: false)
