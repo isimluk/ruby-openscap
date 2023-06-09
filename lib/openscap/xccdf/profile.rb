@@ -27,9 +27,15 @@ module OpenSCAP
       def description(prefered_lang: nil, markup: false)
         TextList.extract(OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang, markup:)
       end
+
+      def status_current
+        pointer = OpenSCAP.xccdf_profile_get_status_current @raw
+        Status.new pointer unless pointer.null?
+      end
     end
   end
 
   attach_function :xccdf_profile_get_id, [:pointer], :string
   attach_function :xccdf_profile_get_title, [:pointer], :pointer
+  attach_function :xccdf_profile_get_status_current, [:pointer], :pointer
 end

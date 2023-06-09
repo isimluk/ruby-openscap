@@ -19,6 +19,12 @@ class TestProfile < OpenSCAP::TestCase
     end
   end
 
+  def test_status
+    profile do |p|
+      assert_nil p.status_current&.status
+    end
+  end
+
   private
 
   def profile(&)
