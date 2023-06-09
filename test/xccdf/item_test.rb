@@ -44,6 +44,8 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  private
+
   def benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
       OpenSCAP::Xccdf::Benchmark.new(source, &)

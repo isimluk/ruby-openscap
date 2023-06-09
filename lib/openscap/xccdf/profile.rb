@@ -26,6 +26,10 @@ module OpenSCAP
         textlist.destroy
         title
       end
+
+      def description(prefered_lang: nil, markup: false)
+        TextList.extract(OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang, markup:)
+      end
     end
   end
 
