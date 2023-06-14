@@ -5,7 +5,6 @@ require 'openscap/text'
 require 'openscap/xccdf/item_common'
 require 'openscap/xccdf/group'
 require 'openscap/xccdf/rule'
-require 'openscap/xccdf/reference'
 
 module OpenSCAP
   module Xccdf
@@ -39,14 +38,6 @@ module OpenSCAP
         TextList.extract(OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang, markup:)
       end
 
-      def references
-        refs = []
-        OpenSCAP._iterate over: OpenSCAP.xccdf_item_get_references(@raw), as: 'oscap_reference' do |pointer|
-          refs << OpenSCAP::Xccdf::Reference.new(pointer)
-        end
-        refs
-      end
-
       def sub_items = {}
 
       def destroy
@@ -67,7 +58,6 @@ module OpenSCAP
                        :value, 0x4000)
   attach_function :xccdf_item_get_type, [:pointer], XccdfItemType
 
-  attach_function :xccdf_item_get_references, [:pointer], :pointer
   attach_function :oscap_reference_iterator_has_more, [:pointer], :bool
   attach_function :oscap_reference_iterator_next, [:pointer], :pointer
   attach_function :oscap_reference_iterator_free, [:pointer], :void

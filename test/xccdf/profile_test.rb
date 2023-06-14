@@ -31,6 +31,12 @@ class TestProfile < OpenSCAP::TestCase
     end
   end
 
+  def test_references
+    profile do |b|
+      assert_equal b.references, []
+    end
+  end
+
   private
 
   def profile(&)

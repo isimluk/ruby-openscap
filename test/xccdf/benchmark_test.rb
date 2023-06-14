@@ -133,6 +133,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_references
+    benchmark do |b|
+      assert_equal b.references, []
+    end
+  end
+
   private
 
   def benchmark_from_file
