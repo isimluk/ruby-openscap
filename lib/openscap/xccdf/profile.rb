@@ -18,10 +18,6 @@ module OpenSCAP
         end
       end
 
-      def title(prefered_lang = nil)
-        TextList.extract(OpenSCAP.xccdf_profile_get_title(@raw), lang: prefered_lang, markup: false)
-      end
-
       def description(prefered_lang: nil, markup: false)
         TextList.extract(OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang, markup:)
       end
@@ -33,6 +29,5 @@ module OpenSCAP
     end
   end
 
-  attach_function :xccdf_profile_get_title, [:pointer], :pointer
   attach_function :xccdf_profile_get_status_current, [:pointer], :pointer
 end

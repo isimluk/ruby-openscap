@@ -29,10 +29,6 @@ module OpenSCAP
         end if block_given?
       end
 
-      def title lang: nil
-        TextList.extract OpenSCAP.xccdf_benchmark_get_title(@raw), lang:, markup: false
-      end
-
       def description lang: nil
         TextList.extract OpenSCAP.xccdf_benchmark_get_description(@raw), lang:, markup: true
       end
@@ -91,7 +87,6 @@ module OpenSCAP
   attach_function :xccdf_benchmark_free, [:pointer], :void
 
   attach_function :xccdf_benchmark_get_status_current, [:pointer], :pointer
-  attach_function :xccdf_benchmark_get_title, [:pointer], :pointer
   attach_function :xccdf_benchmark_get_description, [:pointer], :pointer
   attach_function :xccdf_benchmark_get_profiles, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_has_more, [:pointer], :bool
