@@ -1,9 +1,9 @@
-![ruby-openscap icon](http://isimluk.fedorapeople.org/ruby-OpenSCAP-small.png) ruby-OpenSCAP
+ruby-OpenSCAP <img alt="icon" src="http://isimluk.fedorapeople.org/ruby-OpenSCAP-small.png" width="100">
 =============
 
 Description
 -------------
-A FFI wrapper around the OpenSCAP library.
+An FFI wrapper around the OpenSCAP library.
 
 Features/problems
 -------------
