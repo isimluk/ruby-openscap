@@ -3,11 +3,13 @@
 require 'openscap/source'
 require 'openscap/xccdf/profile'
 require 'openscap/xccdf/item'
+require 'openscap/xccdf/item_common'
 require 'openscap/xccdf/status'
 
 module OpenSCAP
   module Xccdf
     class Benchmark
+      include ItemCommon
       attr_reader :raw
 
       def initialize(p)
@@ -61,10 +63,6 @@ module OpenSCAP
         OpenSCAP._iterate over: OpenSCAP.xccdf_benchmark_get_profiles(@raw), as: 'xccdf_profile' do |pointer|
           yield OpenSCAP::Xccdf::Profile.new pointer
         end
-      end
-
-      def version
-        OpenSCAP.xccdf_item_get_version @raw
       end
 
       def destroy
