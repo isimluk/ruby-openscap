@@ -35,10 +35,6 @@ module OpenSCAP
         @raw = t
       end
 
-      def description(prefered_lang = nil, markup: false)
-        TextList.extract(OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang, markup:)
-      end
-
       def rationale(prefered_lang = nil, markup: false)
         TextList.extract(OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang, markup:)
       end
@@ -61,7 +57,6 @@ module OpenSCAP
   end
 
   attach_function :xccdf_item_free, [:pointer], :void
-  attach_function :xccdf_item_get_description, [:pointer], :pointer
   attach_function :xccdf_item_get_rationale, [:pointer], :pointer
 
   XccdfItemType = enum(:benchmark, 0x0100,

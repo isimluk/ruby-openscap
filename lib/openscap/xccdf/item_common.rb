@@ -16,10 +16,15 @@ module OpenSCAP
       def title lang: nil
         TextList.extract OpenSCAP.xccdf_item_get_title(@raw), lang:, markup: false
       end
+
+      def description prefered_lang: nil, markup: true
+        TextList.extract(OpenSCAP.xccdf_item_get_description(@raw), lang: prefered_lang, markup:)
+      end
     end
   end
 
   attach_function :xccdf_item_get_id, [:pointer], :string
   attach_function :xccdf_item_get_title, [:pointer], :pointer
+  attach_function :xccdf_item_get_description, [:pointer], :pointer
   attach_function :xccdf_item_get_version, [:pointer], :string
 end
