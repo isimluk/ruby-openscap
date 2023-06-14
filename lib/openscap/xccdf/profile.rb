@@ -22,8 +22,13 @@ module OpenSCAP
         pointer = OpenSCAP.xccdf_profile_get_status_current @raw
         Status.new pointer unless pointer.null?
       end
+
+      def abstract?
+        OpenSCAP.xccdf_profile_get_abstract @raw
+      end
     end
   end
 
   attach_function :xccdf_profile_get_status_current, [:pointer], :pointer
+  attach_function :xccdf_profile_get_abstract, [:pointer], :bool
 end

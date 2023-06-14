@@ -37,6 +37,12 @@ class TestProfile < OpenSCAP::TestCase
     end
   end
 
+  def test_abstract
+    profile do |p|
+      assert_false p.abstract?
+    end
+  end
+
   private
 
   def profile(&)
