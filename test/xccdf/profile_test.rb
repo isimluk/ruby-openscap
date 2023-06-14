@@ -25,6 +25,12 @@ class TestProfile < OpenSCAP::TestCase
     end
   end
 
+  def test_version
+    profile do |p|
+      assert_equal p.version, '3.2.1'
+    end
+  end
+
   private
 
   def profile(&)

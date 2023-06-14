@@ -71,6 +71,7 @@ respective companies.</rear-matter>
   <version>0.0.4</version>
   <model system="urn:xccdf:scoring:default"/>
   <Profile id="xccdf_org.ssgproject.content_profile_common">
+    <version>3.2.1</version>
     <title xml:lang="en-US">Common Profile for General-Purpose Fedora Systems</title>
     <description xml:lang="en-US">This profile contains items common to general-purpose Fedora installations.</description>
     <select idref="xccdf_org.ssgproject.content_rule_disable_prelink" selected="true"/>

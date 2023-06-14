@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require 'openscap/text'
+require 'openscap/xccdf/item_common'
 
 module OpenSCAP
   module Xccdf
     class Profile
+      include ItemCommon
       attr_reader :raw
 
       def initialize(p)
