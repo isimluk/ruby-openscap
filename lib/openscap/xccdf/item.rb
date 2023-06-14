@@ -70,6 +70,7 @@ module OpenSCAP
   attach_function :xccdf_item_get_title, [:pointer], :pointer
   attach_function :xccdf_item_get_description, [:pointer], :pointer
   attach_function :xccdf_item_get_rationale, [:pointer], :pointer
+  attach_function :xccdf_item_get_version, [:pointer], :string
 
   XccdfItemType = enum(:benchmark, 0x0100,
                        :profile, 0x0200,

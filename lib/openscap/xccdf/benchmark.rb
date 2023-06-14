@@ -63,6 +63,10 @@ module OpenSCAP
         end
       end
 
+      def version
+        OpenSCAP.xccdf_item_get_version @raw
+      end
+
       def destroy
         OpenSCAP.xccdf_benchmark_free @raw
         @raw = nil

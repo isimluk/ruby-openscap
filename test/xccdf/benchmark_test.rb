@@ -127,6 +127,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_version
+    benchmark do |b|
+      assert_equal b.version, '0.0.4'
+    end
+  end
+
   private
 
   def benchmark_from_file
