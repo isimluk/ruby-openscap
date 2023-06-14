@@ -18,7 +18,7 @@ module OpenSCAP
     end
 
     def text
-      OpenSCAP.oscap_text_get_text(raw)
+      OpenSCAP.oscap_text_get_text(@raw).force_encoding Encoding::UTF_8
     end
 
     def destroy
