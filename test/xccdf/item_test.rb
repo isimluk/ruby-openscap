@@ -52,6 +52,18 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  def test_references
+    benchmark do |b|
+      item = b.items['xccdf_org.ssgproject.content_rule_disable_prelink']
+      refute_nil item
+      item.references.tap do |refs|
+        assert_equal refs.length, 4
+        assert_equal refs.collect(&:title), ['CM-6(d)', 'CM-6(3)', 'SC-28', 'SI-7']
+        assert_equal refs.collect(&:href).uniq, ['http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf']
+      end
+    end
+  end
+
   private
 
   def benchmark(&)
