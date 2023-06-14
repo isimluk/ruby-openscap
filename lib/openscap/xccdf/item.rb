@@ -2,6 +2,7 @@
 
 require 'openscap/exceptions'
 require 'openscap/text'
+require 'openscap/xccdf/item_common'
 require 'openscap/xccdf/group'
 require 'openscap/xccdf/rule'
 require 'openscap/xccdf/reference'
@@ -9,6 +10,8 @@ require 'openscap/xccdf/reference'
 module OpenSCAP
   module Xccdf
     class Item
+      include ItemCommon
+
       def self.build(t)
         raise OpenSCAP::OpenSCAPError, "Cannot initialize #{self.class.name} with #{t}" \
           unless t.is_a?(FFI::Pointer)

@@ -44,6 +44,14 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  def test_version
+    benchmark do |b|
+      item_sans_version = b.items['xccdf_org.ssgproject.content_group_intro']
+      refute_nil item_sans_version
+      assert_nil item_sans_version.version
+    end
+  end
+
   private
 
   def benchmark(&)
