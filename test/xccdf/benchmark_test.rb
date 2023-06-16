@@ -139,6 +139,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_resolved
+    benchmark do |b|
+      assert b.resolved?
+    end
+  end
+
   private
 
   def benchmark_from_file
