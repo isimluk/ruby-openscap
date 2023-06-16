@@ -104,43 +104,43 @@ class TestBenchmark < OpenSCAP::TestCase
   end
 
   def test_benchamrk_id
-    benchmark do |b|
+    with_benchmark do |b|
       assert_equal b.id, 'xccdf_org.ssgproject.content_benchmark_FEDORA'
     end
   end
 
   def test_status_current
-    benchmark do |b|
+    with_benchmark do |b|
       assert_equal b.status_current.status, :draft
     end
   end
 
   def test_title
-    benchmark do |b|
+    with_benchmark do |b|
       assert_equal b.title, 'Guide to the Secure Configuration of Fedora'
     end
   end
 
   def test_description
-    benchmark do |b|
+    with_benchmark do |b|
       assert_equal b.description, DESCRIPTION
     end
   end
 
   def test_version
-    benchmark do |b|
+    with_benchmark do |b|
       assert_equal b.version, '0.0.4'
     end
   end
 
   def test_references
-    benchmark do |b|
+    with_benchmark do |b|
       assert_equal b.references, []
     end
   end
 
   def test_resolved
-    benchmark do |b|
+    with_benchmark do |b|
       assert b.resolved?
     end
   end
@@ -155,7 +155,7 @@ class TestBenchmark < OpenSCAP::TestCase
     b
   end
 
-  def benchmark(&)
+  def with_benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
       OpenSCAP::Xccdf::Benchmark.new(source, &)
     end
