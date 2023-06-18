@@ -35,14 +35,19 @@ module OpenSCAP
         @raw = nil
       end
 
+      def each_policy(&)
+        OpenSCAP.raise! unless OpenSCAP.xccdf_policy_model_build_all_useful_policies(raw).zero?
+        OpenSCAP._iterate over: OpenSCAP.xccdf_policy_model_get_policies(@raw),
+                          as: 'xccdf_policy' do |pointer|
+          yield OpenSCAP::Xccdf::Policy.new pointer
+        end
+      end
+
       private
 
       def policies_init
         policies = {}
-        OpenSCAP.raise! unless OpenSCAP.xccdf_policy_model_build_all_useful_policies(raw).zero?
-        OpenSCAP._iterate over: OpenSCAP.xccdf_policy_model_get_policies(@raw),
-                          as: 'xccdf_policy' do |pointer|
-          policy = OpenSCAP::Xccdf::Policy.new pointer
+        each_policy do |policy|
           policies[policy.id] = policy
         end
         policies
