@@ -18,6 +18,12 @@ module OpenSCAP
                 "Cannot initialize OpenSCAP::Xccdf::PolicyModel with '#{b}'"
         end
         OpenSCAP.raise! if @raw.null?
+
+        begin
+          yield_self
+        ensure
+          destroy
+        end if block_given?
       end
 
       def policies

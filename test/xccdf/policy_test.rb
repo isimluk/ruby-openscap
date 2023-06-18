@@ -21,9 +21,7 @@ class TestPolicy < OpenSCAP::TestCase
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
       b = OpenSCAP::Xccdf::Benchmark.new source
       assert !b.nil?
-      pm = OpenSCAP::Xccdf::PolicyModel.new b
-      yield(pm)
-      pm.destroy
+      OpenSCAP::Xccdf::PolicyModel.new(b, &)
     end
   end
 end
