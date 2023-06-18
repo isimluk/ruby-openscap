@@ -21,8 +21,13 @@ module OpenSCAP
       def id
         OpenSCAP.xccdf_policy_get_id raw
       end
+
+      def profile
+        Profile.new OpenSCAP.xccdf_policy_get_profile @raw
+      end
     end
   end
 
   attach_function :xccdf_policy_get_id, [:pointer], :string
+  attach_function :xccdf_policy_get_profile, [:pointer], :pointer
 end

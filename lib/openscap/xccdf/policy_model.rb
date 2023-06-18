@@ -20,7 +20,7 @@ module OpenSCAP
         OpenSCAP.raise! if @raw.null?
 
         begin
-          yield_self
+          yield self
         ensure
           destroy
         end if block_given?

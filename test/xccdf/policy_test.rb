@@ -15,6 +15,15 @@ class TestPolicy < OpenSCAP::TestCase
     end
   end
 
+  def test_profile_getter
+    with_policy_model do |pm|
+      pm.each_policy do |policy|
+        profile = policy.profile
+        assert_equal profile.id, 'xccdf_org.ssgproject.content_profile_common'
+      end
+    end
+  end
+
   private
 
   def with_policy_model(&)
