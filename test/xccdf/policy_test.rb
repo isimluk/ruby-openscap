@@ -9,12 +9,21 @@ require 'openscap/xccdf/policy_model'
 
 class TestPolicy < OpenSCAP::TestCase
   def test_new_policy_model
-    @s = OpenSCAP::Source.new '../data/xccdf.xml'
-    b = OpenSCAP::Xccdf::Benchmark.new @s
-    pm = OpenSCAP::Xccdf::PolicyModel.new b
-    assert !b.nil?
-    assert pm.policies.size == 1, pm.policies.to_s
-    assert pm.policies['xccdf_org.ssgproject.content_profile_common']
-    pm.destroy
+    with_policy_model do |pm|
+      assert pm.policies.size == 1, pm.policies.to_s
+      assert pm.policies['xccdf_org.ssgproject.content_profile_common']
+    end
+  end
+
+  private
+
+  def with_policy_model(&)
+    OpenSCAP::Source.new '../data/xccdf.xml' do |source|
+      b = OpenSCAP::Xccdf::Benchmark.new source
+      assert !b.nil?
+      pm = OpenSCAP::Xccdf::PolicyModel.new b
+      yield(pm)
+      pm.destroy
+    end
   end
 end
