@@ -145,6 +145,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_policy_model
+    with_benchmark do |b|
+      assert b.policy_model.policies.keys == ['xccdf_org.ssgproject.content_profile_common']
+    end
+  end
+
   private
 
   def benchmark_from_file

@@ -39,9 +39,10 @@ class TestPolicy < OpenSCAP::TestCase
 
   def with_policy_model(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
-      b = OpenSCAP::Xccdf::Benchmark.new source
-      assert !b.nil?
-      OpenSCAP::Xccdf::PolicyModel.new(b, &)
+      OpenSCAP::Xccdf::Benchmark.new source do |bench|
+        assert !bench.nil?
+        yield bench.policy_model
+      end
     end
   end
 end

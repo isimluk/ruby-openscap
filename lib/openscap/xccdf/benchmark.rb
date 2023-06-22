@@ -57,8 +57,17 @@ module OpenSCAP
         end
       end
 
+      def policy_model
+        @policy_model ||= PolicyModel.new(self)
+      end
+
       def destroy
-        OpenSCAP.xccdf_benchmark_free @raw
+        # Policy Model takes ownership of Xccdf::Benchmark. It is one of these lovely quirks of libopenscap
+        if @policy_model
+          @policy_model.destroy
+        else
+          OpenSCAP.xccdf_benchmark_free @raw
+        end
         @raw = nil
       end
 
