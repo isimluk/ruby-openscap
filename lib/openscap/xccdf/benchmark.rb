@@ -102,3 +102,5 @@ module OpenSCAP
   attach_function :xccdf_profile_iterator_next, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_free, [:pointer], :void
 end
+
+require_relative 'policy_model'
