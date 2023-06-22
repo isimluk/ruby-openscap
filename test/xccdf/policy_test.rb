@@ -16,15 +16,26 @@ class TestPolicy < OpenSCAP::TestCase
   end
 
   def test_profile_getter
-    with_policy_model do |pm|
-      pm.each_policy do |policy|
-        profile = policy.profile
-        assert_equal profile.id, 'xccdf_org.ssgproject.content_profile_common'
-      end
+    with_policy do |policy|
+      profile = policy.profile
+      assert_equal profile.id, 'xccdf_org.ssgproject.content_profile_common'
+    end
+  end
+
+  def test_selects_item
+    with_policy do |policy|
+      assert policy.selects_item?('xccdf_org.ssgproject.content_rule_disable_prelink')
+      refute policy.selects_item?('xccdf_org.ssgproject.content_rule_disable_vsftpd')
     end
   end
 
   private
+
+  def with_policy(&)
+    with_policy_model do |pm|
+      yield pm.policies['xccdf_org.ssgproject.content_profile_common']
+    end
+  end
 
   def with_policy_model(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|

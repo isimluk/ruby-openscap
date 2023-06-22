@@ -25,9 +25,14 @@ module OpenSCAP
       def profile
         Profile.new OpenSCAP.xccdf_policy_get_profile @raw
       end
+
+      def selects_item?(item_idref)
+        OpenSCAP.xccdf_policy_is_item_selected @raw, item_idref
+      end
     end
   end
 
   attach_function :xccdf_policy_get_id, [:pointer], :string
   attach_function :xccdf_policy_get_profile, [:pointer], :pointer
+  attach_function :xccdf_policy_is_item_selected, %i[pointer string], :bool
 end
