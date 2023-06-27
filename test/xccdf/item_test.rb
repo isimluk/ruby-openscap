@@ -64,6 +64,21 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  def test_warnings
+    expected_text = 'If verbose logging to <xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">vsftpd.log</xhtml:code> is done, sparse logging of downloads to <xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">/var/log/xferlog</xhtml:code> will not also occur. However, the information about what files were downloaded is included in the information logged to <xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">vsftpd.log</xhtml:code>'
+    benchmark do |b|
+      item = b.items['xccdf_org.ssgproject.content_rule_ftp_log_transactions']
+      refute_nil item
+      warns = item.warnings
+      assert_equal warns.length, 1
+      warning = warns[0]
+      assert warning.instance_of?(Hash)
+      assert warning.keys.length == 2
+      assert warning[:category] == :general
+      assert warning[:text].text == expected_text
+    end
+  end
+
   private
 
   def benchmark(&)
