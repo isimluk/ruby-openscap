@@ -15,10 +15,7 @@ class ItemTest < OpenSCAP::TestCase
                       "<xhtml:code xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">su</xhtml:code> to gain root privileges if <xhtml:code xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">sudo</xhtml:code> cannot be\n" \
                       "used. Commands which can be executed as a non-root user are are preceded\n" \
                       "by a dollar sign ($) prompt.\n"
-    with_benchmark do |b|
-      item = b.items['xccdf_org.ssgproject.content_group_intro-root-shell-assumed']
-      refute_nil item
-
+    with_item 'xccdf_org.ssgproject.content_group_intro-root-shell-assumed' do |item|
       assert_equal item.description(markup: true), expected_markup
     end
   end
@@ -27,35 +24,25 @@ class ItemTest < OpenSCAP::TestCase
     expected_markup = "\n" \
                       "For AIDE to be effective, an initial database of <i xmlns=\"http://www.w3.org/1999/xhtml\">\"known-good\"</i> information about files\n" \
                       "must be captured and it should be able to be verified against the installed files.\n"
-    with_benchmark do |b|
-      item = b.items['xccdf_org.ssgproject.content_rule_aide_build_database']
-      refute_nil item
-
+    with_item 'xccdf_org.ssgproject.content_rule_aide_build_database' do |item|
       assert_equal item.rationale(markup: true), expected_markup
     end
   end
 
   def test_missing_rationale
-    with_benchmark do |b|
-      item_sans_rationale = b.items['xccdf_org.ssgproject.content_group_intro']
-      refute_nil item_sans_rationale
-
+    with_item 'xccdf_org.ssgproject.content_group_intro' do |item_sans_rationale|
       assert_equal item_sans_rationale.rationale(markup: true), nil
     end
   end
 
   def test_version
-    with_benchmark do |b|
-      item_sans_version = b.items['xccdf_org.ssgproject.content_group_intro']
-      refute_nil item_sans_version
+    with_item 'xccdf_org.ssgproject.content_group_intro' do |item_sans_version|
       assert_nil item_sans_version.version
     end
   end
 
   def test_references
-    with_benchmark do |b|
-      item = b.items['xccdf_org.ssgproject.content_rule_disable_prelink']
-      refute_nil item
+    with_item 'xccdf_org.ssgproject.content_rule_disable_prelink' do |item|
       item.references.tap do |refs|
         assert_equal refs.length, 4
         assert_equal refs.collect(&:title), ['CM-6(d)', 'CM-6(3)', 'SC-28', 'SI-7']
@@ -66,9 +53,7 @@ class ItemTest < OpenSCAP::TestCase
 
   def test_warnings
     expected_text = 'If verbose logging to <xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">vsftpd.log</xhtml:code> is done, sparse logging of downloads to <xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">/var/log/xferlog</xhtml:code> will not also occur. However, the information about what files were downloaded is included in the information logged to <xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">vsftpd.log</xhtml:code>'
-    with_benchmark do |b|
-      item = b.items['xccdf_org.ssgproject.content_rule_ftp_log_transactions']
-      refute_nil item
+    with_item 'xccdf_org.ssgproject.content_rule_ftp_log_transactions' do |item|
       warns = item.warnings
       assert_equal warns.length, 1
       warning = warns[0]
@@ -80,6 +65,14 @@ class ItemTest < OpenSCAP::TestCase
   end
 
   private
+
+  def with_item(id, &)
+    with_benchmark do |b|
+      item = b.items[id]
+      refute_nil item
+      yield item
+    end
+  end
 
   def with_benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
