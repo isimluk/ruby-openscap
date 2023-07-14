@@ -151,6 +151,12 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_schema_version
+    with_benchmark do |b|
+      assert_equal b.schema_version, '1.2'
+    end
+  end
+
   private
 
   def benchmark_from_file

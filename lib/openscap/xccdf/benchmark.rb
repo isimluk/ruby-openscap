@@ -61,6 +61,11 @@ module OpenSCAP
         @policy_model ||= PolicyModel.new(self)
       end
 
+      def schema_version
+        pointer = OpenSCAP.xccdf_benchmark_get_schema_version(@raw)
+        OpenSCAP.xccdf_version_info_get_version(pointer)
+      end
+
       def destroy
         # Policy Model takes ownership of Xccdf::Benchmark. It is one of these lovely quirks of libopenscap
         if @policy_model
@@ -101,6 +106,9 @@ module OpenSCAP
   attach_function :xccdf_profile_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_profile_iterator_next, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_free, [:pointer], :void
+
+  attach_function :xccdf_benchmark_get_schema_version, [:pointer], :pointer
+  attach_function :xccdf_version_info_get_version, [:pointer], :string
 end
 
 require_relative 'policy_model'
