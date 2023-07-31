@@ -24,15 +24,44 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_collect_all_values
+    with_all_values do |vals|
+      assert_equal vals.length, 7
+      assert_equal vals.to_set(&:id).length, 7
+    end
+  end
+
   private
 
   def with_value(&)
     with_benchmark { |b| b.each_value(&) }
   end
 
+  def with_all_values(&)
+    vals = []
+    with_benchmark do |b|
+      vals += collect_values(b)
+      yield vals
+    end
+  end
+
   def with_benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
       OpenSCAP::Xccdf::Benchmark.new(source, &)
     end
+  end
+
+  def collect_values(item)
+    vals = []
+    if item.is_a?(OpenSCAP::Xccdf::Benchmark) || item.is_a?(OpenSCAP::Xccdf::Group)
+      item.each_value { |v| vals << v }
+
+      if item.is_a? OpenSCAP::Xccdf::Benchmark
+        item.each_item { |item| vals += collect_values(item) }
+      else
+        item.each_child { |item| vals += collect_values(item) }
+      end
+    end
+    vals
   end
 end

@@ -13,6 +13,12 @@ module OpenSCAP
         end
       end
 
+      def each_value(&)
+        OpenSCAP._iterate over: OpenSCAP.xccdf_group_get_values(@raw), as: 'xccdf_value' do |pointer|
+          yield OpenSCAP::Xccdf::Value.new pointer
+        end
+      end
+
       def sub_items
         @sub_items ||= sub_items_init
       end
@@ -34,4 +40,5 @@ module OpenSCAP
   attach_function :xccdf_item_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_item_iterator_next, [:pointer], :pointer
   attach_function :xccdf_item_iterator_free, [:pointer], :void
+  attach_function :xccdf_group_get_values, [:pointer], :pointer
 end
