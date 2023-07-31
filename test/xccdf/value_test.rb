@@ -16,7 +16,19 @@ class TestBenchmark < OpenSCAP::TestCase
     end
   end
 
+  def test_value_props
+    with_value do |val|
+      assert_equal val.id, 'xccdf_org.ssgproject.content_value_conditional_clause'
+      assert_equal val.title, 'A conditional clause for check statements.'
+      assert_equal val.description, 'A conditional clause for check statements.'
+    end
+  end
+
   private
+
+  def with_value(&)
+    with_benchmark { |b| b.each_value(&) }
+  end
 
   def with_benchmark(&)
     OpenSCAP::Source.new '../data/xccdf.xml' do |source|
