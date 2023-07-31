@@ -4,6 +4,7 @@ require 'openscap/source'
 require 'openscap/xccdf/profile'
 require 'openscap/xccdf/item'
 require 'openscap/xccdf/item_common'
+require 'openscap/xccdf/value'
 require 'openscap/xccdf/status'
 
 module OpenSCAP
@@ -57,6 +58,12 @@ module OpenSCAP
         end
       end
 
+      def each_value(&)
+        OpenSCAP._iterate over: OpenSCAP.xccdf_benchmark_get_values(@raw), as: 'xccdf_value' do |pointer|
+          yield OpenSCAP::Xccdf::Value.new pointer
+        end
+      end
+
       def policy_model
         @policy_model ||= PolicyModel.new(self)
       end
@@ -106,6 +113,10 @@ module OpenSCAP
   attach_function :xccdf_profile_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_profile_iterator_next, [:pointer], :pointer
   attach_function :xccdf_profile_iterator_free, [:pointer], :void
+  attach_function :xccdf_benchmark_get_values, [:pointer], :pointer
+  attach_function :xccdf_value_iterator_has_more, [:pointer], :bool
+  attach_function :xccdf_value_iterator_next, [:pointer], :pointer
+  attach_function :xccdf_value_iterator_free, [:pointer], :void
 
   attach_function :xccdf_benchmark_get_schema_version, [:pointer], :pointer
   attach_function :xccdf_version_info_get_version, [:pointer], :string
