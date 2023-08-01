@@ -13,6 +13,11 @@ module OpenSCAP
       def status
         OpenSCAP.xccdf_status_get_status @raw
       end
+
+      def date
+        unix_t = OpenSCAP.xccdf_status_get_date @raw
+        Time.at unix_t
+      end
     end
   end
 
@@ -26,4 +31,5 @@ module OpenSCAP
   ]
 
   attach_function :xccdf_status_get_status, [:pointer], :xccdf_status_type_t
+  attach_function :xccdf_status_get_date, [:pointer], :time_t
 end

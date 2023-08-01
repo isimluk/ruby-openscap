@@ -111,7 +111,12 @@ class TestBenchmark < OpenSCAP::TestCase
 
   def test_status_current
     with_benchmark do |b|
-      assert_equal b.status_current.status, :draft
+      status = b.status_current
+      assert_equal status.status, :draft
+      release_date = status.date
+      assert_equal release_date.year, 2014
+      assert_equal release_date.month, 10
+      assert_equal release_date.day, 2
     end
   end
 
