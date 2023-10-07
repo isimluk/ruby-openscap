@@ -11,7 +11,7 @@ GEMSPEC = Gem::Specification.new do |gem|
 
   gem.author = 'Simon Lukasik'
   gem.email = 'isimluk@fedoraproject.org'
-  gem.homepage = 'https://github.com/OpenSCAP/ruby-openscap'
+  gem.homepage = 'https://github.com/isimluk/ruby-openscap'
   gem.license = 'GPL-2.0'
 
   gem.summary = 'A FFI wrapper around the OpenSCAP library'
