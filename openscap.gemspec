@@ -20,6 +20,6 @@ GEMSPEC = Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'ffi', '~> 1.15.5'
 
-  gem.files = Dir['{lib,test}/**/*'] + ['COPYING', 'README.md', 'Rakefile']
+  gem.files = Dir['{lib}/**/*.rb'] + ['COPYING', 'README.md', 'Rakefile']
   gem.require_path = 'lib'
 end
