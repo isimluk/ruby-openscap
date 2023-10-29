@@ -3,6 +3,7 @@
 require 'openscap/exceptions'
 require 'openscap/xccdf/item'
 require 'openscap/xccdf/fix'
+require 'openscap/xccdf/fixtext'
 require 'openscap/xccdf/ident'
 
 module OpenSCAP
@@ -24,6 +25,18 @@ module OpenSCAP
       def each_fix(&)
         OpenSCAP._iterate over: OpenSCAP.xccdf_rule_get_fixes(@raw), as: 'xccdf_fix' do |pointer|
           yield OpenSCAP::Xccdf::Fix.new pointer
+        end
+      end
+
+      def each_fixtext(&)
+        OpenSCAP._iterate over: OpenSCAP.xccdf_rule_get_fixtexts(@raw), as: 'xccdf_fixtext' do |pointer|
+          yield OpenSCAP::Xccdf::Fixtext.new pointer
+        end
+      end
+
+      def fixtexts
+        @fixtexts ||= [].tap do |fixtexts|
+          each_fixtext { |ft| fixtexts << ft }
         end
       end
 
@@ -57,6 +70,11 @@ module OpenSCAP
   attach_function :xccdf_fix_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_fix_iterator_next, [:pointer], :pointer
   attach_function :xccdf_fix_iterator_free, [:pointer], :void
+
+  attach_function :xccdf_rule_get_fixtexts, [:pointer], :pointer
+  attach_function :xccdf_fixtext_iterator_has_more, [:pointer], :bool
+  attach_function :xccdf_fixtext_iterator_next, [:pointer], :pointer
+  attach_function :xccdf_fixtext_iterator_free, [:pointer], :void
 
   attach_function :xccdf_rule_get_idents, [:pointer], :pointer
   attach_function :xccdf_ident_iterator_has_more, [:pointer], :bool

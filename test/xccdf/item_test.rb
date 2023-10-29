@@ -64,6 +64,14 @@ class ItemTest < OpenSCAP::TestCase
     end
   end
 
+  def test_fixtexts
+    with_item 'xccdf_org.ssgproject.content_rule_ftp_log_transactions' do |item|
+      fts = item.fixtexts
+      assert_equal fts.length, 1
+      assert_equal fts.first.text, 'fix it like a boss'
+    end
+  end
+
   private
 
   def with_item(id, &)
