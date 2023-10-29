@@ -21,12 +21,18 @@ module OpenSCAP
         severity_mapping[severity] || severity_mapping[:xccdf_unknown]
       end
 
-      def fixes
-        fixes = []
+      def each_fix(&)
         OpenSCAP._iterate over: OpenSCAP.xccdf_rule_get_fixes(@raw), as: 'xccdf_fix' do |pointer|
-          fixes << OpenSCAP::Xccdf::Fix.new(pointer)
+          yield OpenSCAP::Xccdf::Fix.new pointer
         end
-        fixes
+      end
+
+      def fixes
+        @fixes ||= [].tap do |fixes|
+          each_fix do |fix|
+            fixes << fix
+          end
+        end
       end
 
       def idents
