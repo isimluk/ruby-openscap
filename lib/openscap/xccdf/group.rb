@@ -2,7 +2,7 @@
 
 require 'openscap/exceptions'
 require 'openscap/xccdf'
-require 'openscap/xccdf/item'
+require_relative 'item'
 
 module OpenSCAP
   module Xccdf
@@ -20,18 +20,12 @@ module OpenSCAP
       end
 
       def sub_items
-        @sub_items ||= sub_items_init
-      end
-
-      private
-
-      def sub_items_init
-        collect = {}
-        each_child do |item|
-          collect.merge! item.sub_items
-          collect[item.id] = item
+        @sub_items ||= {}.tap do |sub_items|
+          each_child do |item|
+            sub_items.merge! item.sub_items
+            sub_items[item.id] = item
+          end
         end
-        collect
       end
     end
   end

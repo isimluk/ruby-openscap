@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 require 'openscap/source'
-require 'openscap/xccdf/profile'
-require 'openscap/xccdf/item'
-require 'openscap/xccdf/item_common'
-require 'openscap/xccdf/value'
-require 'openscap/xccdf/status'
+require_relative 'profile'
+require_relative 'item'
+require_relative 'item_common'
+require_relative 'value'
+require_relative 'status'
 
 module OpenSCAP
   module Xccdf
@@ -13,7 +13,7 @@ module OpenSCAP
       include ItemCommon
       attr_reader :raw
 
-      def initialize(p)
+      def initialize p
         case p
         when OpenSCAP::Source
           @raw = OpenSCAP.xccdf_benchmark_import_source p.raw
@@ -35,7 +35,7 @@ module OpenSCAP
       end
 
       def status_current
-        Status.new OpenSCAP.xccdf_benchmark_get_status_current(raw)
+        Status.new OpenSCAP.xccdf_benchmark_get_status_current(@raw)
       end
 
       def profiles
@@ -65,12 +65,12 @@ module OpenSCAP
       end
 
       def policy_model
-        @policy_model ||= PolicyModel.new(self)
+        @policy_model ||= PolicyModel.new self
       end
 
       def schema_version
-        pointer = OpenSCAP.xccdf_benchmark_get_schema_version(@raw)
-        OpenSCAP.xccdf_version_info_get_version(pointer)
+        pointer = OpenSCAP.xccdf_benchmark_get_schema_version @raw
+        OpenSCAP.xccdf_version_info_get_version pointer
       end
 
       def destroy

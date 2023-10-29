@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'openscap/text'
-require 'openscap/xccdf/item_common'
+require_relative 'item_common'
 
 module OpenSCAP
   module Xccdf
@@ -9,7 +9,7 @@ module OpenSCAP
       include ItemCommon
       attr_reader :raw
 
-      def initialize(p)
+      def initialize p
         case p
         when FFI::Pointer
           @raw = p

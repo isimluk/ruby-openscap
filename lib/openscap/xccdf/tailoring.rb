@@ -19,23 +19,17 @@ module OpenSCAP
       end
 
       def profiles
-        @profiles ||= profiles_init
+        @profiles ||= {}.tap do |profiles|
+          OpenSCAP._iterate over: OpenSCAP.xccdf_tailoring_get_profiles(@raw), as: 'xccdf_profile' do |pointer|
+            profile = OpenSCAP::Xccdf::Profile.new pointer
+            profiles[profile.id] = profile
+          end
+        end
       end
 
       def destroy
         OpenSCAP.xccdf_tailoring_free @raw
         @raw = nil
-      end
-
-      private
-
-      def profiles_init
-        profiles = {}
-        OpenSCAP._iterate over: OpenSCAP.xccdf_tailoring_get_profiles(@raw), as: 'xccdf_profile' do |pointer|
-          profile = OpenSCAP::Xccdf::Profile.new pointer
-          profiles[profile.id] = profile
-        end
-        profiles
       end
     end
   end

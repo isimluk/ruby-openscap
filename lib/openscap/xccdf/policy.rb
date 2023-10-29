@@ -12,21 +12,20 @@ module OpenSCAP
         when FFI::Pointer
           @raw = p
         else
-          raise OpenSCAP::OpenSCAPError,
-                "Cannot initialize OpenSCAP::Xccdf::Policy with '#{p}'"
+          raise OpenSCAP::OpenSCAPError, "Cannot initialize OpenSCAP::Xccdf::Policy with '#{p}'"
         end
         OpenSCAP.raise! if @raw.null?
       end
 
       def id
-        OpenSCAP.xccdf_policy_get_id raw
+        OpenSCAP.xccdf_policy_get_id @raw
       end
 
       def profile
         Profile.new OpenSCAP.xccdf_policy_get_profile @raw
       end
 
-      def selects_item?(item_idref)
+      def selects_item? item_idref
         OpenSCAP.xccdf_policy_is_item_selected @raw, item_idref
       end
     end

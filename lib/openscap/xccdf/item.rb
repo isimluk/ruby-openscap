@@ -2,16 +2,16 @@
 
 require 'openscap/exceptions'
 require 'openscap/text'
-require 'openscap/xccdf/item_common'
-require 'openscap/xccdf/group'
-require 'openscap/xccdf/rule'
+require_relative 'item_common'
+require_relative 'group'
+require_relative 'rule'
 
 module OpenSCAP
   module Xccdf
     class Item
       include ItemCommon # reflects OpenSCAP's struct xccdf_item (thus operates with Benchmark, Profile, Group, Rule, and Value)
 
-      def self.build(t)
+      def self.build t
         raise OpenSCAP::OpenSCAPError, "Cannot initialize #{self.class.name} with #{t}" \
           unless t.is_a?(FFI::Pointer)
 
@@ -26,13 +26,13 @@ module OpenSCAP
         end
       end
 
-      def initialize(t)
+      def initialize t
         raise OpenSCAP::OpenSCAPError, "Cannot initialize #{self.class.name} abstract base class." if instance_of?(OpenSCAP::Xccdf::Item)
 
         @raw = t
       end
 
-      def rationale(prefered_lang = nil, markup: false)
+      def rationale prefered_lang = nil, markup: false
         TextList.extract(OpenSCAP.xccdf_item_get_rationale(@raw), lang: prefered_lang, markup:)
       end
 

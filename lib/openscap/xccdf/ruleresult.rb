@@ -6,7 +6,7 @@ require 'openscap/text'
 module OpenSCAP
   module Xccdf
     class RuleResult
-      def initialize(t)
+      def initialize t
         case t
         when FFI::Pointer
           @rr = t
@@ -20,11 +20,10 @@ module OpenSCAP
       end
 
       def result
-        OpenSCAP.xccdf_test_result_type_get_text \
-          OpenSCAP.xccdf_rule_result_get_result(@rr)
+        OpenSCAP.xccdf_test_result_type_get_text OpenSCAP.xccdf_rule_result_get_result(@rr)
       end
 
-      def override!(param)
+      def override! param
         validate_xccdf_result! param[:new_result]
         t = OpenSCAP::Text.new
         t.text = param[:raw_text]
@@ -41,7 +40,7 @@ module OpenSCAP
 
       private
 
-      def validate_xccdf_result!(result_label)
+      def validate_xccdf_result! result_label
         if OpenSCAP::XccdfResult[result_label] > OpenSCAP::XccdfResult[:fixed]
           raise OpenSCAPError, "Could not recognize result type: '#{result_label}'"
         end
@@ -63,6 +62,5 @@ module OpenSCAP
                      :notselected,
                      :informational,
                      :fixed)
-  attach_function :xccdf_rule_result_override,
-                  [:pointer, XccdfResult, :string, :string, :pointer], :bool
+  attach_function :xccdf_rule_result_override, [:pointer, XccdfResult, :string, :string, :pointer], :bool
 end

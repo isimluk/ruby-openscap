@@ -10,7 +10,7 @@ module OpenSCAP
     class TestResult
       attr_reader :rr, :raw
 
-      def initialize(t)
+      def initialize t
         case t
         when OpenSCAP::Source
           @raw = OpenSCAP.xccdf_result_import_source(t.raw)
@@ -25,15 +25,23 @@ module OpenSCAP
       end
 
       def id
-        OpenSCAP.xccdf_result_get_id(@raw)
+        OpenSCAP.xccdf_result_get_id @raw
       end
 
       def profile
-        OpenSCAP.xccdf_result_get_profile(@raw)
+        OpenSCAP.xccdf_result_get_profile @raw
       end
 
       def score
-        @score ||= score_init
+        @score ||= {}.tap do |scores|
+          OpenSCAP._iterate over: OpenSCAP.xccdf_result_get_scores(@raw), as: 'xccdf_score' do |s|
+            scores[OpenSCAP.xccdf_score_get_system(s)] = {
+              system: OpenSCAP.xccdf_score_get_system(s),
+              value: OpenSCAP.xccdf_score_get_score(s),
+              max: OpenSCAP.xccdf_score_get_maximum(s)
+            }
+          end
+        end
       end
 
       def score!(benchmark)
@@ -62,18 +70,6 @@ module OpenSCAP
           rr = OpenSCAP::Xccdf::RuleResult.new pointer
           @rr[rr.id] = rr
         end
-      end
-
-      def score_init
-        scores = {}
-        OpenSCAP._iterate over: OpenSCAP.xccdf_result_get_scores(@raw), as: 'xccdf_score' do |s|
-          scores[OpenSCAP.xccdf_score_get_system(s)] = {
-            system: OpenSCAP.xccdf_score_get_system(s),
-            value: OpenSCAP.xccdf_score_get_score(s),
-            max: OpenSCAP.xccdf_score_get_maximum(s)
-          }
-        end
-        scores
       end
     end
   end

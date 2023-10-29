@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'openscap/exceptions'
-require 'openscap/xccdf/benchmark'
-require 'openscap/xccdf/policy'
+require_relative 'benchmark'
+require_relative 'policy'
 
 module OpenSCAP
   module Xccdf
     class PolicyModel
       attr_reader :raw
 
-      def initialize(b)
+      def initialize b
         case b
         when OpenSCAP::Xccdf::Benchmark
           @raw = OpenSCAP.xccdf_policy_model_new(b.raw)
@@ -27,7 +27,9 @@ module OpenSCAP
       end
 
       def policies
-        @policies ||= policies_init
+        @policies ||= {}.tap do |policies|
+          each_policy { |p| policies[p.id] = p }
+        end
       end
 
       def destroy
@@ -41,16 +43,6 @@ module OpenSCAP
                           as: 'xccdf_policy' do |pointer|
           yield OpenSCAP::Xccdf::Policy.new pointer
         end
-      end
-
-      private
-
-      def policies_init
-        policies = {}
-        each_policy do |policy|
-          policies[policy.id] = policy
-        end
-        policies
       end
     end
   end

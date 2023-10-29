@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'openscap/text'
-require 'openscap/xccdf/reference'
+require_relative 'reference'
 
 module OpenSCAP
   module Xccdf

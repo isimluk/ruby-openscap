@@ -3,7 +3,7 @@
 module OpenSCAP
   module Xccdf
     class Session
-      def initialize(input_filename)
+      def initialize input_filename
         raise OpenSCAPError, 'No filename specified!' unless input_filename
 
         @input_filename = input_filename
@@ -12,25 +12,25 @@ module OpenSCAP
       end
 
       def sds?
-        OpenSCAP.xccdf_session_is_sds(@s)
+        OpenSCAP.xccdf_session_is_sds @s
       end
 
-      def load(opts = {})
+      def load opts = {}
         o = {
           datastream_id: nil,
           component_id: nil
-        }.merge(opts)
+        }.merge opts
         if sds?
-          OpenSCAP.xccdf_session_set_datastream_id(@s, o[:datastream_id])
-          OpenSCAP.xccdf_session_set_component_id(@s, o[:component_id])
+          OpenSCAP.xccdf_session_set_datastream_id @s, o[:datastream_id]
+          OpenSCAP.xccdf_session_set_component_id @s, o[:component_id]
         end
         OpenSCAP.raise! unless OpenSCAP.xccdf_session_load(@s).zero?
         OpenSCAP.raise! unless OpenSCAP.xccdf_session_load_check_engine_plugins(@s).zero?
       end
 
-      def profile=(p)
+      def profile= p
         @profile = p
-        raise OpenSCAPError, "No profile '#{p}' found" if OpenSCAP.xccdf_session_set_profile_id(@s, p) == false
+        raise OpenSCAPError, "No profile '#{p}' found" unless OpenSCAP.xccdf_session_set_profile_id(@s, p)
       end
 
       def evaluate
@@ -49,13 +49,13 @@ module OpenSCAP
           oval_results: false,
           oval_variables: false,
           engines_results: false
-        }.merge!(opts)
+        }.merge! opts
         export_targets o
         export
       end
 
       def destroy
-        OpenSCAP.xccdf_session_free(@s)
+        OpenSCAP.xccdf_session_free @s
         @s = nil
       end
 
@@ -68,7 +68,7 @@ module OpenSCAP
         OpenSCAP.raise! unless OpenSCAP.xccdf_session_export_arf(@s).zero?
       end
 
-      def export_targets(opts = {})
+      def export_targets opts = {}
         OpenSCAP.raise! unless OpenSCAP.xccdf_session_set_arf_export(@s, opts[:rds_file])
         OpenSCAP.raise! unless OpenSCAP.xccdf_session_set_xccdf_export(@s, opts[:xccdf_file])
         OpenSCAP.raise! unless OpenSCAP.xccdf_session_set_report_export(@s, opts[:report_file])

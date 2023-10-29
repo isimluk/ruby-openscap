@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require 'openscap/exceptions'
-require 'openscap/xccdf/item'
-require 'openscap/xccdf/fix'
-require 'openscap/xccdf/fixtext'
-require 'openscap/xccdf/ident'
+require_relative 'item'
+require_relative 'fix'
+require_relative 'fixtext'
+require_relative 'ident'
 
 module OpenSCAP
   module Xccdf
     class Rule < Item
       def severity
-        severity = OpenSCAP.xccdf_rule_get_severity(@raw)
+        severity = OpenSCAP.xccdf_rule_get_severity @raw
         severity_mapping = {
           xccdf_level_not_defined: 'Not defined',
           xccdf_unknown: 'Unknown',
