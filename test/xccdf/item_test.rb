@@ -66,9 +66,31 @@ class ItemTest < OpenSCAP::TestCase
 
   def test_fixtexts
     with_item 'xccdf_org.ssgproject.content_rule_ftp_log_transactions' do |item|
-      fts = item.fixtexts
-      assert_equal fts.length, 1
-      assert_equal fts.first.text, 'fix it like a boss'
+      assert_equal item.fixtexts.length, 1
+      fix = item.fixtexts.first
+      assert_equal fix.text, 'fix it like a boss'
+      assert_equal false, fix.reboot
+      assert_equal :strategy_unknown, fix.strategy
+    end
+  end
+
+  def test_items_fixes
+    expected_content = "var_accounts_minimum_age_login_defs=\"<sub xmlns=\"http://checklists.nist.gov/xccdf/1.2\" idref=\"xccdf_org.ssgproject.content_value_var_accounts_minimum_age_login_defs\" use=\"legacy\"/>\"\ngrep -q ^PASS_MIN_DAYS /etc/login.defs &amp;&amp; \\\nsed -i \"s/PASS_MIN_DAYS.*/PASS_MIN_DAYS\\t$var_accounts_minimum_age_login_defs/g\" /etc/login.defs\nif ! [ $? -eq 0 ]\nthen\n  echo -e \"PASS_MIN_DAYS\\t$var_accounts_minimum_age_login_defs\" &gt;&gt; /etc/login.defs\nfi\n"
+    expected_hashes = {
+      id: nil,
+      platform: nil,
+      content: expected_content,
+      system: 'urn:xccdf:fix:script:sh'
+    }
+
+    with_item 'xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs' do |login_defs_rule|
+      assert_equal login_defs_rule.fixes.length, 1
+
+      fix = login_defs_rule.fixes.first
+      assert_equal expected_content, fix.content
+      assert_equal expected_hashes, fix.to_hash
+      assert_equal false, fix.reboot
+      assert_equal :strategy_unknown, fix.strategy
     end
   end
 

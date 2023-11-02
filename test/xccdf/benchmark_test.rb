@@ -88,21 +88,6 @@ class TestBenchmark < OpenSCAP::TestCase
     b.destroy
   end
 
-  def test_items_fixes
-    b = benchmark_from_file
-    login_defs_rule = b.items['xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs']
-    expected_content = ["var_accounts_minimum_age_login_defs=\"<sub xmlns=\"http://checklists.nist.gov/xccdf/1.2\" idref=\"xccdf_org.ssgproject.content_value_var_accounts_minimum_age_login_defs\" use=\"legacy\"/>\"\ngrep -q ^PASS_MIN_DAYS /etc/login.defs &amp;&amp; \\\nsed -i \"s/PASS_MIN_DAYS.*/PASS_MIN_DAYS\\t$var_accounts_minimum_age_login_defs/g\" /etc/login.defs\nif ! [ $? -eq 0 ]\nthen\n  echo -e \"PASS_MIN_DAYS\\t$var_accounts_minimum_age_login_defs\" &gt;&gt; /etc/login.defs\nfi\n"]
-    expected_hashes = [{
-      id: nil,
-      platform: nil,
-      content: expected_content.first,
-      system: 'urn:xccdf:fix:script:sh'
-    }]
-    assert_equal(expected_content, login_defs_rule.fixes.map(&:content), 'Fix content should match')
-    assert_equal(expected_hashes, login_defs_rule.fixes.map(&:to_hash), 'Fix hash should match')
-    b.destroy
-  end
-
   def test_benchamrk_id
     with_benchmark do |b|
       assert_equal b.id, 'xccdf_org.ssgproject.content_benchmark_FEDORA'

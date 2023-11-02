@@ -9,21 +9,12 @@ module OpenSCAP
         @raw = raw
       end
 
-      def id
-        OpenSCAP.xccdf_fix_get_id @raw
-      end
-
-      def platform
-        OpenSCAP.xccdf_fix_get_platform @raw
-      end
-
-      def fix_system
-        OpenSCAP.xccdf_fix_get_system @raw
-      end
-
-      def content
-        OpenSCAP.xccdf_fix_get_content @raw
-      end
+      def id = OpenSCAP.xccdf_fix_get_id @raw
+      def platform = OpenSCAP.xccdf_fix_get_platform @raw
+      def fix_system = OpenSCAP.xccdf_fix_get_system @raw
+      def content = OpenSCAP.xccdf_fix_get_content @raw
+      def reboot = OpenSCAP.xccdf_fix_get_reboot @raw
+      def strategy = OpenSCAP.xccdf_fix_get_strategy @raw
 
       def to_hash
         { id:, platform:, system: fix_system, content: }
@@ -34,4 +25,18 @@ module OpenSCAP
   attach_function :xccdf_fix_get_platform, [:pointer], :string
   attach_function :xccdf_fix_get_system, [:pointer], :string
   attach_function :xccdf_fix_get_content, [:pointer], :string
+  attach_function :xccdf_fix_get_reboot, [:pointer], :bool
+
+  XccdfStrategy = enum(
+    :strategy_unknown, 0, # Strategy not defined
+    :strategy_configure,  # Adjust target config or settings
+    :strategy_disable,    # Turn off or deinstall something
+    :strategy_enable,     # Turn on or install something
+    :strategy_patch,      # Apply a patch, hotfix, or update
+    :strategy_policy,	   # Remediation by changing policies/procedures
+    :strategy_restrict,	 # Adjust permissions or ACLs
+    :strategy_update,	   # Install upgrade or update the system
+    :strategy_combination # Combo of two or more of the above
+  )
+  attach_function :xccdf_fix_get_strategy, [:pointer], XccdfStrategy
 end

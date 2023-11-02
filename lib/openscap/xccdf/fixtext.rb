@@ -9,11 +9,15 @@ module OpenSCAP
         @raw = raw
       end
 
-      def text
-        Text.new(OpenSCAP.xccdf_fixtext_get_text(@raw)).text
-      end
+      def text = Text.new(OpenSCAP.xccdf_fixtext_get_text(@raw)).text
+      def fixref = OpenSCAP.xccdf_fixtext_get_fixref @raw
+      def reboot = OpenSCAP.xccdf_fixtext_get_reboot @raw
+      def strategy = OpenSCAP.xccdf_fixtext_get_strategy @raw
     end
   end
 
   attach_function :xccdf_fixtext_get_text, [:pointer], :pointer
+  attach_function :xccdf_fixtext_get_fixref, [:pointer], :string
+  attach_function :xccdf_fixtext_get_reboot, [:pointer], :bool
+  attach_function :xccdf_fixtext_get_strategy, [:pointer], XccdfStrategy
 end
