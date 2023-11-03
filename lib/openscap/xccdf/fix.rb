@@ -15,6 +15,7 @@ module OpenSCAP
       def content = OpenSCAP.xccdf_fix_get_content @raw
       def reboot = OpenSCAP.xccdf_fix_get_reboot @raw
       def strategy = OpenSCAP.xccdf_fix_get_strategy @raw
+      def disruption = OpenSCAP.xccdf_fix_get_disruption @raw
 
       def to_hash
         { id:, platform:, system: fix_system, content: }
@@ -39,4 +40,13 @@ module OpenSCAP
     :strategy_combination # Combo of two or more of the above
   )
   attach_function :xccdf_fix_get_strategy, [:pointer], XccdfStrategy
+  XccdfLevel = enum(
+    :level_not_defined, 0,
+    :level_unknown, 1, # Unknown.
+    :level_info, # Info.
+    :level_low, # Low.
+    :level_medium, # Medium.
+    :level_high		          # High.
+  )
+  attach_function :xccdf_fix_get_disruption, [:pointer], XccdfLevel
 end

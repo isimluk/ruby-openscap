@@ -13,6 +13,7 @@ module OpenSCAP
       def fixref = OpenSCAP.xccdf_fixtext_get_fixref @raw
       def reboot = OpenSCAP.xccdf_fixtext_get_reboot @raw
       def strategy = OpenSCAP.xccdf_fixtext_get_strategy @raw
+      def disruption = OpenSCAP.xccdf_fixtext_get_disruption @raw
     end
   end
 
@@ -20,4 +21,5 @@ module OpenSCAP
   attach_function :xccdf_fixtext_get_fixref, [:pointer], :string
   attach_function :xccdf_fixtext_get_reboot, [:pointer], :bool
   attach_function :xccdf_fixtext_get_strategy, [:pointer], XccdfStrategy
+  attach_function :xccdf_fixtext_get_disruption, [:pointer], XccdfLevel
 end
