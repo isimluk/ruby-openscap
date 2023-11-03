@@ -16,6 +16,7 @@ module OpenSCAP
       def reboot = OpenSCAP.xccdf_fix_get_reboot @raw
       def strategy = OpenSCAP.xccdf_fix_get_strategy @raw
       def disruption = OpenSCAP.xccdf_fix_get_disruption @raw
+      def complexity = OpenSCAP.xccdf_fix_get_complexity @raw
 
       def to_hash
         { id:, platform:, system: fix_system, content: }
@@ -49,4 +50,5 @@ module OpenSCAP
     :level_high		          # High.
   )
   attach_function :xccdf_fix_get_disruption, [:pointer], XccdfLevel
+  attach_function :xccdf_fix_get_complexity, [:pointer], XccdfLevel
 end

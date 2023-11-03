@@ -14,6 +14,7 @@ module OpenSCAP
       def reboot = OpenSCAP.xccdf_fixtext_get_reboot @raw
       def strategy = OpenSCAP.xccdf_fixtext_get_strategy @raw
       def disruption = OpenSCAP.xccdf_fixtext_get_disruption @raw
+      def complexity = OpenSCAP.xccdf_fixtext_get_complexity @raw
     end
   end
 
@@ -22,4 +23,5 @@ module OpenSCAP
   attach_function :xccdf_fixtext_get_reboot, [:pointer], :bool
   attach_function :xccdf_fixtext_get_strategy, [:pointer], XccdfStrategy
   attach_function :xccdf_fixtext_get_disruption, [:pointer], XccdfLevel
+  attach_function :xccdf_fixtext_get_complexity, [:pointer], XccdfLevel
 end

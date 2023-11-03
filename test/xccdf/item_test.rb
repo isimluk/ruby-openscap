@@ -72,6 +72,7 @@ class ItemTest < OpenSCAP::TestCase
       assert_equal false, fix.reboot
       assert_equal :strategy_unknown, fix.strategy
       assert_equal :level_not_defined, fix.disruption
+      assert_equal :level_not_defined, fix.complexity
     end
   end
 
@@ -93,6 +94,7 @@ class ItemTest < OpenSCAP::TestCase
       assert_equal false, fix.reboot
       assert_equal :strategy_unknown, fix.strategy
       assert_equal :level_not_defined, fix.disruption
+      assert_equal :level_not_defined, fix.complexity
     end
   end
 
