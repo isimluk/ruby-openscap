@@ -11,15 +11,16 @@ module OpenSCAP
 
       def id = OpenSCAP.xccdf_fix_get_id @raw
       def platform = OpenSCAP.xccdf_fix_get_platform @raw
-      def fix_system = OpenSCAP.xccdf_fix_get_system @raw
+      def system = OpenSCAP.xccdf_fix_get_system @raw
       def content = OpenSCAP.xccdf_fix_get_content @raw
       def reboot = OpenSCAP.xccdf_fix_get_reboot @raw
       def strategy = OpenSCAP.xccdf_fix_get_strategy @raw
       def disruption = OpenSCAP.xccdf_fix_get_disruption @raw
       def complexity = OpenSCAP.xccdf_fix_get_complexity @raw
+      alias fix_system system
 
       def to_hash
-        { id:, platform:, system: fix_system, content: }
+        { id:, platform:, system:, content: }
       end
     end
   end
@@ -30,24 +31,24 @@ module OpenSCAP
   attach_function :xccdf_fix_get_reboot, [:pointer], :bool
 
   XccdfStrategy = enum(
-    :strategy_unknown, 0, # Strategy not defined
-    :strategy_configure,  # Adjust target config or settings
-    :strategy_disable,    # Turn off or deinstall something
-    :strategy_enable,     # Turn on or install something
-    :strategy_patch,      # Apply a patch, hotfix, or update
-    :strategy_policy,	   # Remediation by changing policies/procedures
-    :strategy_restrict,	 # Adjust permissions or ACLs
-    :strategy_update,	   # Install upgrade or update the system
-    :strategy_combination # Combo of two or more of the above
+    :unknown, 0, # Strategy not defined
+    :configure,  # Adjust target config or settings
+    :disable,    # Turn off or deinstall something
+    :enable,     # Turn on or install something
+    :patch,      # Apply a patch, hotfix, or update
+    :policy,	   # Remediation by changing policies/procedures
+    :restrict,	 # Adjust permissions or ACLs
+    :update,	   # Install upgrade or update the system
+    :combination # Combo of two or more of the above
   )
   attach_function :xccdf_fix_get_strategy, [:pointer], XccdfStrategy
   XccdfLevel = enum(
-    :level_not_defined, 0,
-    :level_unknown, 1, # Unknown.
-    :level_info, # Info.
-    :level_low, # Low.
-    :level_medium, # Medium.
-    :level_high		          # High.
+    :not_defined, 0,
+    :unknown, 1,
+    :info,
+    :low,
+    :medium,
+    :high
   )
   attach_function :xccdf_fix_get_disruption, [:pointer], XccdfLevel
   attach_function :xccdf_fix_get_complexity, [:pointer], XccdfLevel

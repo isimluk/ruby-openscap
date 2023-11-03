@@ -70,9 +70,9 @@ class ItemTest < OpenSCAP::TestCase
       fix = item.fixtexts.first
       assert_equal fix.text, 'fix it like a boss'
       assert_equal false, fix.reboot
-      assert_equal :strategy_unknown, fix.strategy
-      assert_equal :level_not_defined, fix.disruption
-      assert_equal :level_not_defined, fix.complexity
+      assert_equal :unknown, fix.strategy
+      assert_equal :not_defined, fix.disruption
+      assert_equal :not_defined, fix.complexity
     end
   end
 
@@ -92,9 +92,9 @@ class ItemTest < OpenSCAP::TestCase
       assert_equal expected_content, fix.content
       assert_equal expected_hashes, fix.to_hash
       assert_equal false, fix.reboot
-      assert_equal :strategy_unknown, fix.strategy
-      assert_equal :level_not_defined, fix.disruption
-      assert_equal :level_not_defined, fix.complexity
+      assert_equal :unknown, fix.strategy
+      assert_equal :not_defined, fix.disruption
+      assert_equal :not_defined, fix.complexity
     end
   end
 
