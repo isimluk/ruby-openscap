@@ -68,7 +68,7 @@ class ItemTest < OpenSCAP::TestCase
     with_item 'xccdf_org.ssgproject.content_rule_ftp_log_transactions' do |item|
       assert_equal item.fixtexts.length, 1
       fix = item.fixtexts.first
-      assert_equal fix.text, 'fix it like a boss'
+      assert_equal fix.content, 'fix it like a boss'
       assert_equal false, fix.reboot
       assert_equal :unknown, fix.strategy
       assert_equal :not_defined, fix.disruption
