@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'openscap/source'
-require 'openscap/string'
 require_relative 'profile'
 require_relative 'item'
 require_relative 'item_common'
@@ -65,12 +64,6 @@ module OpenSCAP
         end
       end
 
-      def each_metadata(&)
-        OpenSCAP._iterate over: OpenSCAP.xccdf_benchmark_get_metadata(@raw), as: 'oscap_string' do |pointer|
-          yield OpenSCAP::String.new pointer
-        end
-      end
-
       def policy_model
         @policy_model ||= PolicyModel.new self
       end
@@ -124,7 +117,6 @@ module OpenSCAP
   attach_function :xccdf_value_iterator_has_more, [:pointer], :bool
   attach_function :xccdf_value_iterator_next, [:pointer], :pointer
   attach_function :xccdf_value_iterator_free, [:pointer], :void
-  attach_function :xccdf_benchmark_get_metadata, [:pointer], :pointer
 
   attach_function :xccdf_benchmark_get_schema_version, [:pointer], :pointer
   attach_function :xccdf_version_info_get_version, [:pointer], :string
