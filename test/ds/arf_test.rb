@@ -30,15 +30,6 @@ class TestArf < OpenSCAP::TestCase
            "Message was: #{msg}"
   end
 
-  def test_create_arf_and_get_html
-    arf = new_arf
-    html = arf.html
-    arf.destroy
-    assert html.start_with?('<!DOCTYPE html><html'), 'DOCTYPE missing.'
-    assert html.include?('OpenSCAP')
-    assert html.include?('Compliance and Scoring')
-  end
-
   def test_create_arf_and_get_profile
     arf = new_arf
     tr = arf.test_result

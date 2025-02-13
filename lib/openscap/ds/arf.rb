@@ -43,16 +43,6 @@ module OpenSCAP
         source = OpenSCAP::Source.new source_p
         OpenSCAP::DS::Sds.new(source)
       end
-
-      def html
-        html_p = OpenSCAP.ds_rds_session_get_html_report @session
-        OpenSCAP.raise! if OpenSCAP.error?
-        return nil if html_p.null?
-
-        html = html_p.read_string
-        OpenSCAP::LibC.free html_p
-        html
-      end
     end
   end
 
@@ -61,5 +51,4 @@ module OpenSCAP
   attach_function :ds_rds_session_select_report, %i[pointer string], :pointer
   attach_function :ds_rds_session_replace_report_with_source, %i[pointer pointer], :int
   attach_function :ds_rds_session_select_report_request, %i[pointer string], :pointer
-  attach_function :ds_rds_session_get_html_report, [:pointer], :pointer
 end
