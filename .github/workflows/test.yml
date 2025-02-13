@@ -17,7 +17,7 @@ jobs:
         bundler-cache: true
     - run: |
         sudo apt-get update
-        sudo apt-get -y install libopenscap25t64
+        sudo apt-get -y install libopenscap25t64 openscap-common
     - run: bundle install
     - run: gem build openscap.gemspec
     - run: bundle exec rake test
