@@ -33,19 +33,6 @@ class TestSds < OpenSCAP::TestCase
     sds.destroy
   end
 
-  def test_show_guides
-    sds = new_sds
-    benchmark_source = sds.select_checklist!
-    benchmark = OpenSCAP::Xccdf::Benchmark.new benchmark_source
-    benchmark.profiles.each_key do |id|
-      guide = sds.html_guide id
-      assert !guide.nil?
-      assert guide.include?(id)
-    end
-    benchmark.destroy
-    sds.destroy
-  end
-
   def tests_select_checklist_wrong
     sds = new_sds
     msg = nil
@@ -65,8 +52,6 @@ class TestSds < OpenSCAP::TestCase
       assert_equal 'SCAP Source Datastream', source.type
       OpenSCAP::DS::Sds.new source: do |sds|
         benchmark_source = sds.select_checklist!
-        html = sds.html_guide
-        assert_include html, 'bootstrap'
 
         OpenSCAP::Xccdf::Benchmark.new benchmark_source do |benchmark|
           assert_empty benchmark.profiles

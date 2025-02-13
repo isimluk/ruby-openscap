@@ -34,12 +34,6 @@ module OpenSCAP
         checklist
       end
 
-      def html_guide(profile = nil)
-        html = OpenSCAP.ds_sds_session_get_html_guide(@raw, profile)
-        OpenSCAP.raise! if html.nil?
-        html
-      end
-
       def destroy
         OpenSCAP.ds_sds_session_free(@raw)
         @raw = nil
@@ -50,5 +44,4 @@ module OpenSCAP
   attach_function :ds_sds_session_new_from_source, [:pointer], :pointer
   attach_function :ds_sds_session_free, [:pointer], :void
   attach_function :ds_sds_session_select_checklist, %i[pointer string string string], :pointer
-  attach_function :ds_sds_session_get_html_guide, %i[pointer string], :string
 end
