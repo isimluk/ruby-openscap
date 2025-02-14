@@ -11,7 +11,7 @@ module OpenSCAP
       end
       FileUtils.rm_rf workdir
       Dir.mkdir workdir
-      Dir.chdir workdir
+      Dir.chdir workdir # rubocop:disable ThreadSafety/DirChdir
       @s = nil
       OpenSCAP.oscap_init
     end
