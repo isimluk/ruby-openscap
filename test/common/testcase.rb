@@ -18,7 +18,7 @@ module OpenSCAP
 
     def cleanup
       @s&.destroy
-      Dir.chdir '../..'
+      Dir.chdir '../..' # rubocop:disable ThreadSafety/DirChdir
       OpenSCAP.raise! if OpenSCAP.error?
       OpenSCAP.oscap_cleanup
     end
